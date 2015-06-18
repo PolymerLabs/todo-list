@@ -17,27 +17,79 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: block;
     }
     todo-item {
-      margin-bottom: 16px;
+      margin: 16px 0;
     }
   </style>
   <template>
-    <template is="dom-repeat" items="{{todos}}">
-      <todo-item completed="{{item.isComplete}}">
-        <span>{{item.title}}</span>
-      </todo-item>
-    </template>
+    <p hidden="{{_todosEmpty(todos.length)}}">No more todos!</p>
+
+    <div on-dragstart="dragStart" on-dragenter="dragEnter" on-dragleave="dragLeave" on-dragover="dragOver" on-drop="drop">
+      <template is="dom-repeat" items="{{todos}}"
+                                filter="_byState"
+                                observe="isComplete">
+        <todo-item completed="{{item.isComplete}}"
+        draggable="true" class="item" data-index="[[index]]">
+          <span>{{item.title}}</span>
+        </todo-item>
+      </template>
+    </div>
+
   </template>
-</dom-module>
-<script>
-  Polymer({
-    is: 'todo-list',
-    properties: {
-      todos: {
-        type: Array,
-        value: function() {
-          return [];
+  <script>
+    Polymer({
+      is: 'todo-list',
+      dragIndex: null,
+      properties: {
+        todos: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        },
+        filterBy: {
+          type: String,
+          value: 'all'
         }
+      },
+      _todosEmpty: function(length) {
+        return !!length;
+      },
+      _byState: function(item) {
+        console.log(item);
+        switch(this.filterBy) {
+          // Only display active todos
+          case 'active':
+            return item.isComplete === false;
+
+          // Only display completed todos
+          case 'completed':
+            return item.isComplete === true;
+
+          // Default to display all todos
+          default:
+            return true;
+        }
+      },
+      dragStart: function(e) {
+        this.dragIndex = e.target.dataIndex;
+      },
+      dragOver: function(e) {
+        e.preventDefault();
+      },
+      dragEnter: function(e) {
+
+      },
+      dragLeave: function(e) {
+
+      },
+      drop: function(e) {
+        var dropIndex = e.target.dataIndex;
+        e.preventDefault();
+        //BUG? This causes scope-style and wf-list classes to be dropped.
+        //comment this out and class isn't lost
+        var item = this.splice('todos', this.dragIndex, 1)[0];
+        this.splice('todos', dropIndex, 0, item);
       }
-    }
-  });
-</script>
+    });
+  </script>
+</dom-module>

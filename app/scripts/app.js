@@ -38,9 +38,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         isComplete: false
       }
     ];
-
-    // I think this is a bug in iron-localstorage
-    this.$.todoList.addEventListener('todo-item-changed', this.save.bind(this));
   });
 
   // See https://github.com/Polymer/polymer/issues/1381
@@ -56,25 +53,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   };
 
-  app.addTodo = function() {
+  app.addTodo = function(e, detail) {
     this.push('todos', {
-      title: this.$.todoInput.value,
+      title: detail.value,
       isComplete: false
     });
-    this.$.todoInput.value = null;
-    // I think this is a bug in iron-localstorage
-    this.save();
   };
 
   app.reset = function() {
     this.todos = [];
-    // I think this is a bug in iron-localstorage
-    this.save();
-  }
-
-  app.save = function() {
-    // I think this is a bug in iron-localstorage
-    this.$.localStorage.save();
-  }
+  };
 
 })(document);

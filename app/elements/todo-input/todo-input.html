@@ -9,38 +9,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 
-<dom-module id="todo-item">
+<dom-module id="todo-input">
   <style>
     :host {
       display: block;
     }
-    paper-checkbox[checked] ::content span {
-      font-style: italic;
-      opacity: 0.5;
-      text-decoration: line-through;
+    #todoInput {
+      margin-bottom: 32px;
     }
   </style>
   <template>
-    <paper-checkbox checked="{{completed}}">
-      <content></content>
-    </paper-checkbox>
+    <paper-input id="todoInput" label="Enter a todo"></paper-input>
+    <paper-button raised on-tap="add">Add Todo</paper-button>
+    <paper-button raised on-tap="reset">Clear All</paper-button>
   </template>
-  <script>
-    Polymer({
-      is: 'todo-item',
-      properties: {
-        completed: {
-          type: Boolean,
-          value: false,
-          notify: true,
-          observer: '_handleChange'
-        }
-      },
-      _handleChange: function() {
-        this.fire('todo-item-changed');
-      }
-    });
-  </script>
 </dom-module>
+<script>
+  Polymer({
+    is: 'todo-input',
+    add: function() {
+      this.fire('add-todo', {value: this.$.todoInput.value});
+      this.$.todoInput.value = null;
+    },
+    reset: function() {
+      this.fire('reset-todos');
+    }
+  });
+</script>
