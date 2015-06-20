@@ -108,7 +108,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="all">
               <paper-material elevation="1">
-                <todo-list todos="{{todos}}">
+                <todo-list todos="{{todos}}"
+                           on-todo-item-canceled="removeTodo">
                 </todo-list>
               </paper-material>
 

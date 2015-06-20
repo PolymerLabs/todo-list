@@ -60,6 +60,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
   };
 
+  app.removeTodo = function(e, detail) {
+    this.splice('todos', detail.index, 1);
+  };
+
   app.reset = function() {
     this.todos = [];
   };

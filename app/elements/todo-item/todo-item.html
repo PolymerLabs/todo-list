@@ -10,6 +10,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
 <dom-module id="todo-item">
   <style>
@@ -23,23 +25,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <paper-checkbox checked="{{completed}}">
-      <content></content>
-    </paper-checkbox>
+    <paper-checkbox checked="{{completed}}"></paper-checkbox>
+    <content></content>
+    <paper-icon-button hidden="{{!_isActive}}" icon="cancel"
+                       on-tap="_handleCancel">
+    </paper-icon-button>
   </template>
   <script>
     Polymer({
       is: 'todo-item',
+      hostAttributes: {
+        tabindex: 0
+      },
+      listeners: {
+        'focus': '_handleFocus',
+        'blur': '_handleBlur'
+      },
       properties: {
         completed: {
           type: Boolean,
           value: false,
-          notify: true,
-          observer: '_handleChange'
-        }
+          notify: true
+        },
+        index: Number
       },
-      _handleChange: function() {
-        this.fire('todo-item-changed');
+      attached: function() {
+        this._isActive = false;
+      },
+      _handleFocus: function(e) {
+        this._isActive = true;
+      },
+      _handleBlur: function() {
+        // this._isActive = false;
+      },
+      _handleCancel: function() {
+        this.fire('todo-item-canceled', {index: this.index});
       }
     });
   </script>
