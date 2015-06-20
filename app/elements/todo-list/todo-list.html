@@ -10,20 +10,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../todo-item/todo-item.html">
+<link rel="import" href="../iron-sortable-list/iron-sortable-list.html">
 
 <dom-module id="todo-list">
   <style>
     :host {
       display: block;
     }
+    iron-sortable-list {
+      /*padding: 16px;*/
+    }
     todo-item {
       margin: 16px 0;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-transform: translateZ(0);
+      box-shadow: none !important;
+    }
+    todo-item.moving {
+      -webkit-transition: -webkit-transform 0.2s ease-in-out;
+      transition: transform 0.1s ease-in-out;
+    }
+    todo-item.dragging {
+      z-index: 1;
+      box-shadow: 2px 2px 9px 0px rgba(50, 50, 50, 0.75);
     }
   </style>
   <template>
     <p hidden="{{_todosEmpty(todos.length)}}">No more todos!</p>
 
-    <div on-dragstart="dragStart" on-dragenter="dragEnter" on-dragleave="dragLeave" on-dragover="dragOver" on-drop="drop">
+    <iron-sortable-list>
       <template is="dom-repeat" items="{{todos}}"
                                 filter="_byState"
                                 observe="isComplete">
@@ -32,7 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span>{{item.title}}</span>
         </todo-item>
       </template>
-    </div>
+    </iron-sortable-list>
 
   </template>
   <script>
@@ -55,7 +71,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return !!length;
       },
       _byState: function(item) {
-        console.log(item);
         switch(this.filterBy) {
           // Only display active todos
           case 'active':
