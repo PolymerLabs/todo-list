@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 
 <dom-module id="todo-input">
   <style>
@@ -28,6 +29,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <script>
   Polymer({
     is: 'todo-input',
+    behaviors: [Polymer.IronA11yKeysBehavior],
+    keyBindings: {
+      'enter': 'add'
+    },
     add: function() {
       this.fire('add-todo', {value: this.$.todoInput.value});
       this.$.todoInput.value = null;
