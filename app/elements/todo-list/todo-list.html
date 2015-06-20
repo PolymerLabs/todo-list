@@ -54,7 +54,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
       is: 'todo-list',
-      dragIndex: null,
       properties: {
         todos: {
           type: Array,
@@ -84,26 +83,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           default:
             return true;
         }
-      },
-      dragStart: function(e) {
-        this.dragIndex = e.target.dataIndex;
-      },
-      dragOver: function(e) {
-        e.preventDefault();
-      },
-      dragEnter: function(e) {
-
-      },
-      dragLeave: function(e) {
-
-      },
-      drop: function(e) {
-        var dropIndex = e.target.dataIndex;
-        e.preventDefault();
-        //BUG? This causes scope-style and wf-list classes to be dropped.
-        //comment this out and class isn't lost
-        var item = this.splice('todos', this.dragIndex, 1)[0];
-        this.splice('todos', dropIndex, 0, item);
       }
     });
   </script>
