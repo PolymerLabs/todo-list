@@ -11,40 +11,81 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
 <dom-module id="todo-item">
   <style>
     :host {
       display: block;
+      min-height: 50px;
+      position: relative;
+      box-sizing: border-box;
     }
-    paper-checkbox[checked] ::content span {
+    .todo-title {
+      /* This is only to fix contenteditable text cursor size */
+      display: inline-block;
+      vertical-align: middle;
+    }
+    #input {
+      display: inline-block;
+      vertical-align: middle;
+      font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #333;
+      font-size: 16px;
+      border: none;
+      padding: 0;
+    }
+    paper-checkbox[checked] + .todo-title {
+      display: inline-block;
+      vertical-align: middle;
       font-style: italic;
       opacity: 0.5;
       text-decoration: line-through;
     }
+    paper-icon-button {
+      display: inline-block;
+      vertical-align: middle;
+      padding: 0;
+    }
   </style>
   <template>
-    <paper-checkbox checked="{{completed}}"></paper-checkbox>
-    <content></content>
-    <paper-icon-button hidden="{{!_isActive}}" icon="cancel"
+
+    <paper-checkbox checked="{{completed}}">
+    </paper-checkbox>
+
+    <!-- Obnoxious Polymer binding bug can't handle whitespace -->
+    <span class="todo-title" hidden="{{_isActive}}"
+                             on-tap="_handleFocus">{{title}}</span>
+
+    <input type="text"
+           id="input"
+           tabindex="-1"
+           on-blur="_handleBlur"
+           hidden="{{!_isActive}}"
+           value="{{title::input}}">
+    </input>
+
+    <!-- <paper-icon-button hidden="{{!_isActive}}"
+                       icon="cancel"
                        on-tap="_handleCancel">
-    </paper-icon-button>
+    </paper-icon-button> -->
+
   </template>
   <script>
     Polymer({
       is: 'todo-item',
-      hostAttributes: {
-        tabindex: 0
-      },
-      listeners: {
-        'focus': '_handleFocus',
-        'blur': '_handleBlur'
-      },
+      // hostAttributes: {
+      //   tabindex: 0
+      // },
       properties: {
         completed: {
           type: Boolean,
           value: false,
+          notify: true
+        },
+        title: {
+          type: String,
           notify: true
         },
         index: Number
@@ -52,11 +93,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       attached: function() {
         this._isActive = false;
       },
+      _updateTitle: function(e) {
+        this.title = e.target.textContent;
+      },
       _handleFocus: function(e) {
         this._isActive = true;
+        this.$.input.focus();
       },
       _handleBlur: function() {
-        // this._isActive = false;
+        console.log('blur!');
+        this._isActive = false;
       },
       _handleCancel: function() {
         this.fire('todo-item-canceled', {index: this.index});
