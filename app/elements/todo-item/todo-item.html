@@ -44,9 +44,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       text-decoration: line-through;
     }
     paper-icon-button {
-      display: inline-block;
+      display: none;
       vertical-align: middle;
       padding: 0;
+    }
+    :host(.iron-selected) paper-icon-button {
+      display: inline-block;
     }
   </style>
   <template>
@@ -55,21 +58,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </paper-checkbox>
 
     <!-- Obnoxious Polymer binding bug can't handle whitespace -->
-    <span class="todo-title" hidden="{{_isActive}}"
-                             on-tap="_handleFocus">[[title]]</span>
+    <span class="todo-title" on-tap="_notifySelected">[[title]]</span>
 
     <!-- <input type="text"
            id="input"
            tabindex="-1"
-           on-blur="_handleBlur"
-           hidden="{{!_isActive}}"
            value="{{title::input}}">
     </input> -->
 
-    <!-- <paper-icon-button hidden="{{!_isActive}}"
-                       icon="cancel"
+    <paper-icon-button icon="cancel"
+                       tabindex="0"
                        on-tap="_handleCancel">
-    </paper-icon-button> -->
+    </paper-icon-button>
 
   </template>
   <script>
@@ -86,21 +86,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         title: String,
         index: Number
       },
-      attached: function() {
-        // this._isActive = false;
-      },
-      _updateTitle: function(e) {
-        // this.title = e.target.textContent;
-      },
-      _handleFocus: function(e) {
-        // this._isActive = true;
-        // this.$.input.focus();
-      },
-      _handleBlur: function() {
-        // this._isActive = false;
+      // _updateTitle: function(e) {
+      //   this.title = e.target.textContent;
+      // },
+      _notifySelected: function() {
+        this.fire('todo-item-selected');
       },
       _handleCancel: function() {
-        // this.fire('todo-item-canceled', {index: this.index});
+        console.log('handle cancel');
+        this.fire('todo-item-canceled', {index: this.index});
       }
     });
   </script>

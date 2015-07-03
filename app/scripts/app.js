@@ -46,7 +46,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.renderTodos = function(snapshot) {
-    console.log('renderTodos');
     // Clear our todos, this is so we can rerender
     // without holding on to state
     this.todos = [];
@@ -54,8 +53,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var todo = childSnapshot.val();
       // Store a reference to the Firebase object so we can
       // easily remove this todo.
-      // TODO: We should do this with a key instead!
-      // todo.ref = childSnapshot.ref();
+      todo.$id = childSnapshot.key();
       // Use Polymer's push method to add the child
       // to the todos array. This is to notify observers
       this.push('todos', todo);
@@ -71,10 +69,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.removeTodo = function(e, detail) {
-    // TODO: Need to find by key, then remove
+    // Find todo by index, then remove from Firebase using todo's key
     // Remove from Firebase, causing the lists to rerender
-    // var todo = this.todos[detail.index];
-    // todo.ref.remove();
+    var todo = this.todos[detail.index];
+    this.ref.child(todo.$id).remove();
   };
 
   app.resetTodos = function() {

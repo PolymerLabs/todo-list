@@ -45,7 +45,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 observe="isComplete">
         <todo-item title="[[item.title]]"
                    completed="[[item.isComplete]]"
-                   index="[[index]]">
+                   index="[[index]]"
+                   on-todo-item-selected="_toggleSelected">
         </todo-item>
       </template>
     </iron-sortable-list>
@@ -75,6 +76,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // can update
       _todosSorted: function() {
         this.fire('todo-list-sorted', {todos: this.todos});
+      },
+      _toggleSelected: function(e) {
+        if (this.selected) {
+          this.selected.classList.remove('selected-todo');
+        }
+        this.selected = e.currentTarget;
+        this.selected.classList.add('selected-todo');
       },
       _todosEmpty: function(length) {
         return !!length;
