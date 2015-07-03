@@ -24,7 +24,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.addEventListener('dom-change', function() {
     console.log('Our app is ready to rock!');
 
-    this.todos = this.todos || [];
+    // Create a connection to the Firebase database
+    this.ref = new Firebase('https://polymer-todo.firebaseio.com/robdodson');
+
+    // Listen for realtime changes
+    // This will be called any time the state of the firebase is changed
+    this.ref.on('value', this.renderTodos.bind(this));
   });
 
   // See https://github.com/Polymer/polymer/issues/1381
@@ -40,26 +45,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   };
 
+  app.renderTodos = function(snapshot) {
+    console.log('renderTodos');
+    // Clear our todos, this is so we can rerender
+    // without holding on to state
+    this.todos = [];
+    snapshot.forEach(function(childSnapshot) {
+      var todo = childSnapshot.val();
+      // Store a reference to the Firebase object so we can
+      // easily remove this todo.
+      // TODO: We should do this with a key instead!
+      // todo.ref = childSnapshot.ref();
+      // Use Polymer's push method to add the child
+      // to the todos array. This is to notify observers
+      this.push('todos', todo);
+    }.bind(this));
+  };
+
   app.addTodo = function(e, detail) {
-    this.push('todos', {
+    // Push to Firebase, causing the lists to rerender
+    this.ref.push({
       title: detail.value,
       isComplete: false
     });
   };
 
   app.removeTodo = function(e, detail) {
-    this.splice('todos', detail.index, 1);
+    // TODO: Need to find by key, then remove
+    // Remove from Firebase, causing the lists to rerender
+    // var todo = this.todos[detail.index];
+    // todo.ref.remove();
   };
 
   app.resetTodos = function() {
-    this.todos = [];
+    // Remove all from Firebase, causing the lists to rerender
+    this.ref.remove();
   };
 
   app.syncTodos = function(e, detail) {
-    // TODO: Why are the other list instances not picking up this change???
-    this.set('todos', detail.todos);
-    console.log(this.todos);
-    console.log('saving to firebase...');
+    this.ref.remove();
+    // TODO: Possibly DRY up with addTodo method
+    detail.todos.forEach(function(todo) {
+      console.log(todo);
+      this.ref.push({
+        title: todo.title,
+        isComplete: todo.isComplete
+      });
+    }.bind(this));
   }
 
 })(document);

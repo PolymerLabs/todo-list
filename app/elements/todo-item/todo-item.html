@@ -51,20 +51,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <template>
 
-    <paper-checkbox checked="{{completed}}">
+    <paper-checkbox checked="[[completed]]">
     </paper-checkbox>
 
     <!-- Obnoxious Polymer binding bug can't handle whitespace -->
     <span class="todo-title" hidden="{{_isActive}}"
-                             on-tap="_handleFocus">{{title}}</span>
+                             on-tap="_handleFocus">[[title]]</span>
 
-    <input type="text"
+    <!-- <input type="text"
            id="input"
            tabindex="-1"
            on-blur="_handleBlur"
            hidden="{{!_isActive}}"
            value="{{title::input}}">
-    </input>
+    </input> -->
 
     <!-- <paper-icon-button hidden="{{!_isActive}}"
                        icon="cancel"
@@ -81,30 +81,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         completed: {
           type: Boolean,
-          value: false,
-          notify: true
+          value: false
         },
-        title: {
-          type: String,
-          notify: true
-        },
+        title: String,
         index: Number
       },
       attached: function() {
-        this._isActive = false;
+        // this._isActive = false;
       },
       _updateTitle: function(e) {
-        this.title = e.target.textContent;
+        // this.title = e.target.textContent;
       },
       _handleFocus: function(e) {
-        this._isActive = true;
-        this.$.input.focus();
+        // this._isActive = true;
+        // this.$.input.focus();
       },
       _handleBlur: function() {
-        this._isActive = false;
+        // this._isActive = false;
       },
       _handleCancel: function() {
-        this.fire('todo-item-canceled', {index: this.index});
+        // this.fire('todo-item-canceled', {index: this.index});
       }
     });
   </script>

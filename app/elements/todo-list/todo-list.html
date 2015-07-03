@@ -43,8 +43,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <template is="dom-repeat" items="{{todos}}"
                                 filter="_byState"
                                 observe="isComplete">
-        <todo-item title="{{item.title}}"
-                   completed="{{item.isComplete}}"
+        <todo-item title="[[item.title]]"
+                   completed="[[item.isComplete]]"
                    index="[[index]]">
         </todo-item>
       </template>
