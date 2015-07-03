@@ -108,21 +108,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="all">
               <paper-material elevation="1">
-                <todo-list todos="{{todos}}"
+                <todo-list todos="[[todos]]"
+                           on-todo-list-sorted="syncTodos"
                            on-todo-item-canceled="removeTodo">
                 </todo-list>
               </paper-material>
 
               <paper-material elevation="1">
                 <todo-input on-add-todo="addTodo"
-                            on-reset-todos="reset">
+                            on-reset-todos="resetTodos">
                 </todo-input>
               </paper-material>
             </section>
 
             <section data-route="active">
               <paper-material elevation="1">
-                <todo-list todos="{{todos}}"
+                <todo-list todos="[[todos]]"
                            filter-by="active">
                 </todo-list>
               </paper-material>
@@ -130,7 +131,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="completed">
               <paper-material elevation="1">
-                <todo-list todos="{{todos}}"
+                <todo-list todos="[[todos]]"
                            filter-by="completed">
                 </todo-list>
               </paper-material>

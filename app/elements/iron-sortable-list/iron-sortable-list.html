@@ -103,6 +103,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               this.transform('', el);
               el.classList.remove('moving');
             }, this);
+            // BLOG: Added this to know when I could tell the world to update
+            // firebase
+            this.fire('sort-end');
             break;
         }
       },

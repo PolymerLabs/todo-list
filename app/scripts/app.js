@@ -24,20 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.addEventListener('dom-change', function() {
     console.log('Our app is ready to rock!');
 
-    this.todos = this.todos || [
-      {
-        title: 'Write Net Mag article',
-        isComplete: false
-      },
-      {
-        title: 'Work on next Polycast',
-        isComplete: true
-      },
-      {
-        title: 'Do some jumping jacks',
-        isComplete: false
-      }
-    ];
+    this.todos = this.todos || [];
   });
 
   // See https://github.com/Polymer/polymer/issues/1381
@@ -64,8 +51,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     this.splice('todos', detail.index, 1);
   };
 
-  app.reset = function() {
+  app.resetTodos = function() {
     this.todos = [];
   };
+
+  app.syncTodos = function(e, detail) {
+    // TODO: Why are the other list instances not picking up this change???
+    this.set('todos', detail.todos);
+    console.log(this.todos);
+    console.log('saving to firebase...');
+  }
 
 })(document);

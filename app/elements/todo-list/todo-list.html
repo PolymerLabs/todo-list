@@ -39,7 +39,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <p hidden="{{_todosEmpty(todos.length)}}">No more todos!</p>
 
-    <iron-sortable-list>
+    <iron-sortable-list on-sort-end="_todosSorted">
       <template is="dom-repeat" items="{{todos}}"
                                 filter="_byState"
                                 observe="isComplete">
@@ -55,16 +55,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'todo-list',
       properties: {
-        todos: {
-          type: Array,
-          value: function() {
-            return [];
-          }
-        },
+        todos: Array,
         filterBy: {
           type: String,
           value: 'all'
         }
+      },
+
+      // BLOG: This is pretty tricky and annoying. I thought
+      // property observers would work but they don't
+      // TODO: Understand the path arguments better
+      // https://www.polymer-project.org/1.0/docs/devguide/properties.html#deep-observation
+      // observers: [
+      //   '_todosRearranged(todos.*)'
+      // ],
+
+      // When the user drags to rearrange todos, wait for the
+      // array/dom to settle, then tell the world so Firebase
+      // can update
+      _todosSorted: function() {
+        this.fire('todo-list-sorted', {todos: this.todos});
       },
       _todosEmpty: function(length) {
         return !!length;
