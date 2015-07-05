@@ -54,11 +54,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <template>
 
-    <paper-checkbox checked="[[completed]]">
+    <paper-checkbox id="checkbox"
+                    checked="[[completed]]"
+                    on-tap="_notifyCheckedToggled">
     </paper-checkbox>
 
-    <!-- Obnoxious Polymer binding bug can't handle whitespace -->
-    <span class="todo-title" on-tap="_notifySelected">[[title]]</span>
+    <!-- Temp/hacky way to tell the parent I'm selected. But classes don't stick around unfortunately. Somethign is busted in dom-repeat -->
+    <span class="todo-title"
+          on-tap="_notifySelected">[[title]]</span>
 
     <!-- <input type="text"
            id="input"
@@ -68,7 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <paper-icon-button icon="cancel"
                        tabindex="0"
-                       on-tap="_handleCancel">
+                       on-tap="_notifyCanceled">
     </paper-icon-button>
 
   </template>
@@ -89,11 +92,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // _updateTitle: function(e) {
       //   this.title = e.target.textContent;
       // },
+      _notifyCheckedToggled: function() {
+        this.fire('todo-item-checked-toggled', {
+          index: this.index,
+          isComplete: this.$.checkbox.checked
+        });
+      },
       _notifySelected: function() {
         this.fire('todo-item-selected');
       },
       _handleCancel: function() {
-        console.log('handle cancel');
         this.fire('todo-item-canceled', {index: this.index});
       }
     });

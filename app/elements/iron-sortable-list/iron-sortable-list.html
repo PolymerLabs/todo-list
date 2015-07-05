@@ -34,10 +34,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       trackElements: function(e) {
-        if (!this.repeater && e.target.is == 'dom-repeat') {
+        if (!this.repeater && e.target.is === 'dom-repeat') {
           this.repeater = e.target;
         }
-        if (e.target == this.repeater) {
+        if (e.target === this.repeater) {
           Polymer.dom(this).children.forEach(function(el) {
             if (el !== this.repeater && !el.__reorderTracking) {
               this.listen(el, 'track', 'handleTrack');
@@ -72,7 +72,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               var children = Polymer.dom(this).children;
               for (var i=start; i<=end; i++) {
                 var el = children[i];
-                if (el != this.repeater && i !== this.dragModel.index) {
+                if (el !== this.repeater && i !== this.dragModel.index) {
                   var dir = 0;
                   if (i > this.dragModel.index && i <= overIndex) {
                     dir = -1;

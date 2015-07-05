@@ -48,6 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.renderTodos = function(snapshot) {
     // Clear our todos, this is so we can rerender
     // without holding on to state
+    // This way Firebase becomes the single source of truth
     this.todos = [];
     snapshot.forEach(function(childSnapshot) {
       var todo = childSnapshot.val();
@@ -75,6 +76,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     this.ref.child(todo.$id).remove();
   };
 
+  app.toggleTodo = function(e, detail) {
+    // Find todo by index, then update its isComplete value in Firebase
+    var todo = this.todos[detail.index];
+    this.ref.child(todo.$id).update({isComplete: detail.isComplete});
+  };
+
   app.resetTodos = function() {
     // Remove all from Firebase, causing the lists to rerender
     this.ref.remove();
@@ -90,6 +97,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         isComplete: todo.isComplete
       });
     }.bind(this));
-  }
+  };
 
 })(document);

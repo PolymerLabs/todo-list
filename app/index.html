@@ -110,6 +110,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-material elevation="1">
                 <todo-list todos="[[todos]]"
                            on-todo-list-sorted="syncTodos"
+                           on-todo-item-checked-toggled="toggleTodo"
                            on-todo-item-canceled="removeTodo">
                 </todo-list>
               </paper-material>
