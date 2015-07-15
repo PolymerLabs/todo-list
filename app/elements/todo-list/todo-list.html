@@ -10,47 +10,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../todo-item/todo-item.html">
-<link rel="import" href="../iron-sortable-list/iron-sortable-list.html">
 
 <dom-module id="todo-list">
   <style>
     :host {
       display: block;
     }
-    iron-sortable-list {
-      padding: 16px;
-    }
     todo-item {
       margin: 16px 0;
-      -webkit-user-select: none;
-      user-select: none;
-      -webkit-transform: translateZ(0);
-      box-shadow: none !important;
-    }
-    todo-item.moving {
-      -webkit-transition: -webkit-transform 0.2s ease-in-out;
-      transition: transform 0.1s ease-in-out;
-    }
-    todo-item.dragging {
-      z-index: 1;
-      box-shadow: 2px 2px 9px 0px rgba(50, 50, 50, 0.75);
     }
   </style>
   <template>
     <p hidden="{{_todosEmpty(todos.length)}}">No more todos!</p>
-
-    <iron-sortable-list on-sort-end="_todosSorted">
-      <template is="dom-repeat" items="{{todos}}"
-                                filter="_byState"
-                                observe="isComplete">
-        <todo-item title="[[item.title]]"
-                   completed="[[item.isComplete]]"
-                   index="[[index]]"
-                   on-todo-item-selected="_toggleSelected">
-        </todo-item>
-      </template>
-    </iron-sortable-list>
-
+    <template is="dom-repeat" items="[[todos]]"
+                              filter="_byState"
+                              observe="isComplete">
+      <todo-item title="[[item.title]]"
+                 completed="[[item.isComplete]]"
+                 index="[[index]]">
+      </todo-item>
+    </template>
   </template>
   <script>
     Polymer({
@@ -71,19 +50,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       //   '_todosRearranged(todos.*)'
       // ],
 
-      // When the user drags to rearrange todos, wait for the
-      // array/dom to settle, then tell the world so Firebase
-      // can update
-      _todosSorted: function() {
-        this.fire('todo-list-sorted', {todos: this.todos});
-      },
-      _toggleSelected: function(e) {
-        if (this.selected) {
-          this.selected.classList.remove('selected-todo');
-        }
-        this.selected = e.currentTarget;
-        this.selected.classList.add('selected-todo');
-      },
       _todosEmpty: function(length) {
         return !!length;
       },
