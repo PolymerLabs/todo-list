@@ -13,30 +13,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
 
 <dom-module id="todo-item">
   <style>
     :host {
       display: block;
       min-height: 50px;
-      position: relative;
       box-sizing: border-box;
     }
-    .todo-title {
-      /* This is only to fix contenteditable text cursor size */
-      display: inline-block;
-      vertical-align: middle;
-    }
     #input {
-      display: inline-block;
-      vertical-align: middle;
-      font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-family: var(--default-font-family);
       color: #333;
       font-size: 16px;
       border: none;
       padding: 0;
     }
-    paper-checkbox[checked] + .todo-title {
+    paper-checkbox[checked] + #todo-item__title {
       display: inline-block;
       vertical-align: middle;
       font-style: italic;
@@ -48,38 +41,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       vertical-align: middle;
       padding: 0;
     }
-    :host(.iron-selected) paper-icon-button {
+    :host(.iron-selected) paper-icon-button,
+    :host:hover paper-icon-button {
       display: inline-block;
     }
   </style>
   <template>
+    <div class="todo-item__row layout horizontal">
+      <paper-checkbox id="checkbox"
+                      checked="[[completed]]"
+                      on-tap="_notifyCheckedToggled">
+      </paper-checkbox>
 
-    <paper-checkbox id="checkbox"
-                    checked="[[completed]]"
-                    on-tap="_notifyCheckedToggled">
-    </paper-checkbox>
+      <span id="todo-item__title"
+            class="flex"
+            contenteditable
+            on-input="_checkChangesAndNotify">[[title]]</span>
 
-    <span class="todo-title"
-          on-tap="_notifySelected">[[title]]</span>
-
-    <!-- <input type="text"
-           id="input"
-           tabindex="-1"
-           value="{{title::input}}">
-    </input> -->
-
-    <paper-icon-button icon="cancel"
-                       tabindex="0"
-                       on-tap="_notifyCanceled">
-    </paper-icon-button>
-
+      <paper-icon-button icon="cancel"
+                         tabindex="0"
+                         on-tap="_notifyCanceled">
+      </paper-icon-button>
+    </div>
   </template>
   <script>
     Polymer({
       is: 'todo-item',
-      // hostAttributes: {
-      //   tabindex: 0
-      // },
       properties: {
         completed: {
           type: Boolean,
@@ -88,20 +75,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         title: String,
         index: Number
       },
-      // _updateTitle: function(e) {
-      //   this.title = e.target.textContent;
-      // },
+      _checkChangesAndNotify: function() {
+        var newTitle = this.$['todo-item__title'].textContent;
+        if (newTitle !== this.title) {
+          this.fire('todo-item-edited', {
+            index: this.index,
+            title: newTitle
+          });
+        }
+      },
       _notifyCheckedToggled: function() {
         this.fire('todo-item-checked-toggled', {
           index: this.index,
           isComplete: this.$.checkbox.checked
         });
       },
-      _notifySelected: function() {
-        this.fire('todo-item-selected');
-      },
-      _handleCancel: function() {
-        this.fire('todo-item-canceled', {index: this.index});
+      _notifyCanceled: function() {
+        this.fire('todo-item-canceled', {
+          index: this.index
+        });
       }
     });
   </script>

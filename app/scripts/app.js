@@ -82,21 +82,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     this.ref.child(todo.$id).update({isComplete: detail.isComplete});
   };
 
+  app.editTodo = function(e, detail) {
+    // Find todo by index, then update its title value in Firebase
+    var todo = this.todos[detail.index];
+    this.ref.child(todo.$id).update({title: detail.title});
+  };
+
   app.resetTodos = function() {
     // Remove all from Firebase, causing the lists to rerender
     this.ref.remove();
-  };
-
-  app.syncTodos = function(e, detail) {
-    this.ref.remove();
-    // TODO: Possibly DRY up with addTodo method
-    detail.todos.forEach(function(todo) {
-      console.log(todo);
-      this.ref.push({
-        title: todo.title,
-        isComplete: todo.isComplete
-      });
-    }.bind(this));
   };
 
 })(document);

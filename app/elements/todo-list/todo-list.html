@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../todo-item/todo-item.html">
 
 <dom-module id="todo-list">
@@ -22,14 +23,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <template>
     <p hidden="{{_todosEmpty(todos.length)}}">No more todos!</p>
-    <template is="dom-repeat" items="[[todos]]"
-                              filter="_byState"
-                              observe="isComplete">
-      <todo-item title="[[item.title]]"
-                 completed="[[item.isComplete]]"
-                 index="[[index]]">
-      </todo-item>
-    </template>
+    <iron-selector id="selector">
+      <template is="dom-repeat" items="[[todos]]"
+                                filter="_byState"
+                                observe="isComplete">
+        <todo-item title="[[item.title]]"
+                   completed="[[item.isComplete]]"
+                   index="[[index]]">
+        </todo-item>
+      </template>
+    </iron-selector>
   </template>
   <script>
     Polymer({
@@ -40,6 +43,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           value: 'all'
         }
+      },
+      listeners: {
+        'todo-item-canceled': '_resetSelected'
       },
 
       // BLOG: This is pretty tricky and annoying. I thought
@@ -67,6 +73,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           default:
             return true;
         }
+      },
+      // When a todo item is canceled, it will be removed from the list
+      // so we need to tell iron-selector to go back to having no children
+      // selected. We do this async because iron-selector seems to set selected
+      // after todo-item-canceled fires (possibly the click event comes later).
+      _resetSelected: function() {
+        this.async(function() {
+          this.$.selector.selected = null;
+        }.bind(this));
       }
     });
   </script>
