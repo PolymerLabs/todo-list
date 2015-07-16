@@ -15,12 +15,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // Learn more about auto-binding templates at http://goo.gl/Dx1u2g
   var app = document.querySelector('#app');
 
-  app.displayInstalledToast = function() {
-    document.querySelector('#caching-complete').show();
-  };
-
   // Listen for template bound event to know when bindings
   // have resolved and content has been stamped to the page
+  // This is a good place to do initialization work
   app.addEventListener('dom-change', function() {
     console.log('Our app is ready to rock!');
 
@@ -28,14 +25,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     this.ref = new Firebase('https://polymer-todo.firebaseio.com/robdodson');
 
     // Listen for realtime changes
-    // This will be called any time the state of the firebase is changed
+    // This will be called any time state is changed in Firebase and
+    // will typically cause the list to rerender. Because most elements
+    // in the list remain the same, the dirty checking here is cheap
+    // ...or so kevinpschaaf tells me :D
+    // This makes Firebase the single source of truth for the app, meaning
+    // most/all components are stateless. Which is awesome.
     this.ref.on('value', this.renderTodos.bind(this));
   });
 
-  // See https://github.com/Polymer/polymer/issues/1381
-  window.addEventListener('WebComponentsReady', function() {
-    // imports are loaded and elements have been registered
-  });
+  // Let the user know that offline caching has worked and their
+  // app is available offline
+  app.displayInstalledToast = function() {
+    document.querySelector('#caching-complete').show();
+  };
 
   // Close drawer after menu item is selected if drawerPanel is narrow
   app.onMenuSelect = function() {
@@ -62,7 +65,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.addTodo = function(e, detail) {
-    // Push to Firebase, causing the lists to rerender
+    // Add todo to Firebase
     this.ref.push({
       title: detail.value,
       isComplete: false
@@ -70,8 +73,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.removeTodo = function(e, detail) {
-    // Find todo by index, then remove from Firebase using todo's key
-    // Remove from Firebase, causing the lists to rerender
+    // Find todo by index, then remove from Firebase
     var todo = this.todos[detail.index];
     this.ref.child(todo.$id).remove();
   };
@@ -89,7 +91,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.resetTodos = function() {
-    // Remove all from Firebase, causing the lists to rerender
+    // Remove all from Firebase
     this.ref.remove();
   };
 
