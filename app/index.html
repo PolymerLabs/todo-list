@@ -93,8 +93,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span class="flex"></span>
 
           <!-- Application name -->
-          <div class="middle paper-font-display2 app-name">
+          <div class="middle paper-font-display2 app-name flex">
             Todos
+          </div>
+
+          <div class="middle">
+            <iron-icon icon="account-circle"
+                       on-tap="signOut">
+            </iron-icon>
           </div>
 
           <!-- Application sub title -->
@@ -120,11 +126,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             on-reset-todos="resetTodos">
                 </todo-input>
               </paper-material>
-
-              <paper-material elevation="1">
-                <button type="button"
-                        on-tap="signIn">Sign in with Googles</button>
-              </paper-material>
             </section>
 
             <section data-route="active">
@@ -147,6 +148,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </paper-header-panel>
     </paper-drawer-panel>
+
+    <paper-dialog id="signInDialog"
+                  modal
+                  entry-animation="scale-up-animation"
+                  exit-animation="fade-out-animation">
+      <h2>Sign In</h2>
+      <button type="button"
+              on-tap="signIn">Sign in with Googles</button>
+    </paper-dialog>
 
     <paper-toast id="caching-complete"
                  duration="6000"

@@ -23,11 +23,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.addEventListener('dom-change', function() {
     console.log('Our app is ready to rock!');
 
-    // Listen for user sign in
-    this.addEventListener('user-signed-in', this.handleUserSignIn.bind(this));
-
     // Create a connection to the Firebase database
     this.ref = new Firebase(FIREBASE_APP);
+
+    // Listen for user sign in
+    this.addEventListener('user-signed-in', this.handleUserSignIn.bind(this));
 
     // Check to see if the user is already signed in
     var authData = this.ref.getAuth();
@@ -37,6 +37,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     } else {
       console.log('User is not logged in');
       // Show sign in screen
+      this.$.signInDialog.open();
     }
   });
 
@@ -45,10 +46,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if (error) {
         console.log('Login Failed!', error);
       } else {
-        console.log('Authenticated successfully with payload:', authData);
+        console.log('Authenticated user with uid:', authData.uid);
+        this.$.signInDialog.close();
         this.fire('user-signed-in', {authData: authData});
       }
-    });
+    }.bind(this));
+  };
+
+  app.signOut = function() {
+    this.ref.unauth();
+    console.log('User has signed out');
   };
 
   app.handleUserSignIn = function(e) {
