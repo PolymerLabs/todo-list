@@ -22,13 +22,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       min-height: 50px;
       box-sizing: border-box;
     }
-    #input {
-      font-family: var(--default-font-family);
-      color: #333;
-      font-size: 16px;
-      border: none;
-      padding: 0;
-    }
     paper-checkbox[checked] + #todo-item__title {
       display: inline-block;
       vertical-align: middle;
@@ -37,17 +30,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       text-decoration: line-through;
     }
     paper-icon-button {
-      display: none;
+      visibility: hidden;
       vertical-align: middle;
       padding: 0;
     }
     :host(.iron-selected) paper-icon-button,
     :host:hover paper-icon-button {
-      display: inline-block;
+      visibility: visible;
     }
   </style>
   <template>
-    <div class="todo-item__row layout horizontal">
+    <div class="todo-item__row layout horizontal center-center">
       <paper-checkbox id="checkbox"
                       checked="[[completed]]"
                       on-tap="_notifyCheckedToggled">
