@@ -15,3 +15,6 @@ handlers:
   http_headers:
     Access-Control-Allow-Origin: "*"
   secure: always
+
+skip_files:
+- ^(?!dist)(.*)
