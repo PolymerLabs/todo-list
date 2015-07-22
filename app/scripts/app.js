@@ -54,8 +54,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.signOut = function() {
-    this.ref.unauth();
-    console.log('User has signed out');
+    // this.ref.unauth();
+    // console.log('User has signed out');
   };
 
   app.handleUserSignIn = function(e) {
@@ -97,34 +97,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }.bind(this));
   };
 
+  // Add todo to Firebase
   app.addTodo = function(e, detail) {
-    // Add todo to Firebase
     this.userRef.push({
       title: detail.value,
       isComplete: false
     });
   };
 
+  // Find todo by index, then remove from Firebase
   app.removeTodo = function(e, detail) {
-    // Find todo by index, then remove from Firebase
     var todo = this.todos[detail.index];
     this.userRef.child(todo.$id).remove();
   };
 
+  // Find todo by index, then update its isComplete value in Firebase
   app.toggleTodo = function(e, detail) {
-    // Find todo by index, then update its isComplete value in Firebase
     var todo = this.todos[detail.index];
     this.userRef.child(todo.$id).update({isComplete: detail.isComplete});
   };
 
+  // Find todo by index, then update its title value in Firebase
   app.editTodo = function(e, detail) {
-    // Find todo by index, then update its title value in Firebase
     var todo = this.todos[detail.index];
     this.userRef.child(todo.$id).update({title: detail.title});
   };
 
+  // Remove all from Firebase
   app.resetTodos = function() {
-    // Remove all from Firebase
     this.userRef.remove();
   };
 
