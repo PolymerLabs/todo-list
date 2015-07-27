@@ -153,9 +153,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   modal
                   entry-animation="scale-up-animation"
                   exit-animation="fade-out-animation">
-      <h2>Sign In</h2>
-      <button type="button"
-              on-tap="signIn">Sign in with Googles</button>
+      <h2>Oh hai! Please sign in</h2>
+      <div>
+        <div class="google-sign-in"
+             tabindex="0"
+             on-tap="signIn">
+          <span class="google-sign-in__icon"></span>
+          <span class="google-sign-in__button-text">Google</span>
+        </div>
+      </div>
     </paper-dialog>
 
     <paper-toast id="caching-complete"
