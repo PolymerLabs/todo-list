@@ -100,7 +100,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // Add todo to Firebase
   app.addTodo = function(e, detail) {
     this.userRef.push({
-      title: detail.value,
+      todo: detail.value,
       isComplete: false
     });
   };
@@ -117,10 +117,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     this.userRef.child(todo.$id).update({isComplete: detail.isComplete});
   };
 
-  // Find todo by index, then update its title value in Firebase
+  // Find todo by index, then update its todo value in Firebase
   app.editTodo = function(e, detail) {
     var todo = this.todos[detail.index];
-    this.userRef.child(todo.$id).update({title: detail.title});
+    this.userRef.child(todo.$id).update({todo: detail.todo});
   };
 
   // Remove all from Firebase
