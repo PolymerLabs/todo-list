@@ -42,9 +42,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <div class="todo-item__row layout horizontal center-center">
       <paper-checkbox id="checkbox"
-                      checked="[[completed]]"
-                      on-tap="_notifyCheckedToggled">
-      </paper-checkbox>
+                      checked="[[isComplete]]"
+                      on-tap="_notifyCheckedToggled"></paper-checkbox>
 
       <span id="todo-item__title"
             class="flex"
@@ -61,7 +60,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'todo-item',
       properties: {
-        completed: {
+        isComplete: {
           type: Boolean,
           value: false
         },
