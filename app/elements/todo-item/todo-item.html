@@ -51,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <span id="todo-item__title"
             class="flex"
             contenteditable
-            on-input="_checkChangesAndNotify">[[todo]]</span>
+            on-input="_checkChangesAndNotify">[[label]]</span>
 
       <paper-icon-button icon="cancel"
                          tabindex="0"
@@ -67,15 +67,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean,
           value: false
         },
-        todo: String,
+        label: String,
         index: Number
       },
       _checkChangesAndNotify: function() {
-        var newTodo = this.$['todo-item__title'].textContent;
-        if (newTodo !== this.title) {
+        var newLabel = this.$['todo-item__title'].textContent;
+        if (newLabel !== this.label) {
           this.fire('todo-item-edited', {
             index: this.index,
-            todo: newTodo
+            label: newTodo
           });
         }
       },
