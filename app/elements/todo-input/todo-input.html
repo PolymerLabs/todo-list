@@ -16,14 +16,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host {
       display: block;
     }
-    #todoInput {
-      margin-bottom: 32px;
+    .todo-input__input {
+      display: inline-block;
+      width: 65%;
+      --paper-input-container: {
+        padding-bottom: 0;
+      };
+      /* These styles are not DRY :\ */
+      --paper-input-container-label: {
+        font-size: 20px;
+        font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        color: #9E9E9E;
+      };
+      --paper-input-container-input: {
+        font-size: 20px;
+        font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        color: #9E9E9E;
+      };
+      --paper-input-container-underline: {
+        top: 7px;
+        background: #9E9E9E;
+      };
+      --paper-input-container-underline-focus: {
+        top: 7px;
+      };
+    }
+    .todo-input__add-btn {
+      background: #E0E0E0;
+      color: #9E9E9E;
+      font-size: 14px;
     }
   </style>
   <template>
-    <paper-input id="todoInput" label="Enter a todo"></paper-input>
-    <paper-button raised on-tap="add">Add Todo</paper-button>
-    <paper-button raised on-tap="reset">Clear All</paper-button>
+
+    <paper-input id="todoInput"
+                 class="todo-input__input"
+                 noLabelFloat
+                 label="Add an item">
+    </paper-input>
+
+    <paper-button class="todo-input__add-btn"
+                  on-tap="add">
+                  Add
+    </paper-button>
+
   </template>
 </dom-module>
 <script>
@@ -36,9 +72,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     add: function() {
       this.fire('add-todo', {value: this.$.todoInput.value});
       this.$.todoInput.value = null;
-    },
-    reset: function() {
-      this.fire('reset-todos');
     }
   });
 </script>

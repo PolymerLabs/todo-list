@@ -13,6 +13,10 @@ body {
   color: #333;
 }
 
+todo-input {
+  margin-left: 32px;
+}
+
 .google-sign-in {
   display: inline-block;
   background: #4285f4;
