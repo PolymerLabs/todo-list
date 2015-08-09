@@ -14,6 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
 
 <dom-module id="todo-item">
   <style>
@@ -21,30 +22,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: block;
       min-height: 50px;
       box-sizing: border-box;
+      font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
     }
-    paper-checkbox {
+    .todo-item__checkbox {
       margin-right: 16px;
     }
-    paper-checkbox[checked] + #todo-item__title {
+    .todo-item__checkbox[checked] + #todo-item__title {
       display: inline-block;
       vertical-align: middle;
       font-style: italic;
       opacity: 0.5;
       text-decoration: line-through;
     }
-    paper-icon-button {
+    .todo-item__cancel-btn {
       visibility: hidden;
       vertical-align: middle;
       padding: 0;
     }
-    :host(.iron-selected) paper-icon-button,
-    :host:hover paper-icon-button {
+    /* If this element has a selected class (applied via parent), or if the user is hovering, show the delete icon */
+    :host(.iron-selected) .todo-item__cancel-btn,
+    :host:hover .todo-item__cancel-btn {
       visibility: visible;
     }
   </style>
   <template>
-    <div class="todo-item__row layout horizontal center-center">
+    <paper-material elevation="0"
+                    class="todo-item__row layout horizontal center-center">
+                    
       <paper-checkbox id="checkbox"
+                      class="todo-item__checkbox"
                       checked="[[isComplete]]"
                       on-tap="_notifyCheckedToggled"></paper-checkbox>
 
@@ -53,11 +59,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             contenteditable
             on-input="_checkChangesAndNotify">[[label]]</span>
 
-      <paper-icon-button icon="cancel"
+      <paper-icon-button icon="delete"
+                         class="todo-item__cancel-btn"
                          tabindex="0"
                          on-tap="_notifyCanceled">
       </paper-icon-button>
-    </div>
+    </paper-material>
   </template>
   <script>
     Polymer({
@@ -70,6 +77,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         label: String,
         index: Number
       },
+      // Handler for contenteditable events. Check to see if the
+      // todo label was changed. If so, dispatch an event with the
+      // new label
       _checkChangesAndNotify: function() {
         var newLabel = this.$['todo-item__title'].textContent;
         if (newLabel !== this.label) {
@@ -79,12 +89,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           });
         }
       },
+      // Fire an event when the user toggles the checkbox
       _notifyCheckedToggled: function() {
         this.fire('todo-item-checked-toggled', {
           index: this.index,
           isComplete: this.$.checkbox.checked
         });
       },
+      // Fire an event when the user cancels a todo
       _notifyCanceled: function() {
         this.fire('todo-item-canceled', {
           index: this.index

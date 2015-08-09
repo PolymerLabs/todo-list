@@ -53,6 +53,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <!-- will be replaced with elements/elements.vulcanized.html -->
   <link rel="import" href="elements/elements.html">
   <!-- endreplace-->
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
 </head>
 
 <body unresolved class="fullbleed layout vertical">
@@ -113,35 +116,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="all">
-              <paper-material elevation="1">
-                <todo-list todos="[[todos]]"
-                           on-todo-item-edited="editTodo"
-                           on-todo-item-checked-toggled="toggleTodo"
-                           on-todo-item-canceled="removeTodo">
-                </todo-list>
-              </paper-material>
+              <todo-list todos="[[todos]]"
+                         on-todo-item-edited="editTodo"
+                         on-todo-item-checked-toggled="toggleTodo"
+                         on-todo-item-canceled="removeTodo">
+              </todo-list>
 
-              <paper-material elevation="1">
-                <todo-input on-add-todo="addTodo"
-                            on-reset-todos="resetTodos">
-                </todo-input>
-              </paper-material>
+              <todo-input on-add-todo="addTodo"
+                          on-reset-todos="resetTodos">
+              </todo-input>
             </section>
 
             <section data-route="active">
-              <paper-material elevation="1">
-                <todo-list todos="[[todos]]"
-                           filter-by="active">
-                </todo-list>
-              </paper-material>
+              <todo-list todos="[[todos]]"
+                         filter-by="active">
+              </todo-list>
             </section>
 
             <section data-route="completed">
-              <paper-material elevation="1">
-                <todo-list todos="[[todos]]"
-                           filter-by="completed">
-                </todo-list>
-              </paper-material>
+              <todo-list todos="[[todos]]"
+                         filter-by="completed">
+              </todo-list>
             </section>
 
           </iron-pages>
