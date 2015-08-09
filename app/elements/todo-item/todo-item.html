@@ -23,16 +23,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       min-height: 50px;
       box-sizing: border-box;
       font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+      font-size: 20px;
     }
     .todo-item__checkbox {
-      margin-right: 16px;
+      margin-right: 32px;
     }
-    .todo-item__checkbox[checked] + #todo-item__title {
+    .todo-item__checkbox[checked] + .todo-item__label {
       display: inline-block;
       vertical-align: middle;
-      font-style: italic;
-      opacity: 0.5;
+      color: #9E9E9E;
       text-decoration: line-through;
+    }
+    /* Checkbox has 8px of extra space on top so we have to account for that */
+    .todo-item__label {
+      margin-top: 4px;
     }
     .todo-item__cancel-btn {
       visibility: hidden;
@@ -48,22 +52,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <paper-material elevation="0"
                     class="todo-item__row layout horizontal center-center">
-                    
+
       <paper-checkbox id="checkbox"
                       class="todo-item__checkbox"
                       checked="[[isComplete]]"
                       on-tap="_notifyCheckedToggled"></paper-checkbox>
 
-      <span id="todo-item__title"
-            class="flex"
+      <span id="todoItemLabel"
+            class="todo-item__label flex"
             contenteditable
             on-input="_checkChangesAndNotify">[[label]]</span>
 
-      <paper-icon-button icon="delete"
+      <!-- <paper-icon-button icon="delete"
                          class="todo-item__cancel-btn"
                          tabindex="0"
                          on-tap="_notifyCanceled">
-      </paper-icon-button>
+      </paper-icon-button> -->
     </paper-material>
   </template>
   <script>
@@ -81,7 +85,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // todo label was changed. If so, dispatch an event with the
       // new label
       _checkChangesAndNotify: function() {
-        var newLabel = this.$['todo-item__title'].textContent;
+        var newLabel = this.$['todoItemLabel'].textContent;
         if (newLabel !== this.label) {
           this.fire('todo-item-edited', {
             index: this.index,
