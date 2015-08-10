@@ -123,9 +123,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     this.userRef.child(todo.$id).update({label: detail.label});
   };
 
-  // Remove all from Firebase
-  app.resetTodos = function() {
-    this.userRef.remove();
+  // Remove all completed todos from Firebase
+  // TODO: Is this the most efficient way to do this or does Firebase
+  // support some kind of bulk delete?
+  app.clearCompletedTodos = function() {
+    this.todos.forEach(function(todo) {
+      if (todo.isComplete) {
+        this.userRef.child(todo.$id).remove();
+      }
+    }.bind(this));
   };
 
   // Let the user know that offline caching has worked and their

@@ -13,6 +13,10 @@ body {
   color: #333;
 }
 
+.clear-btn {
+  font-size: 14px;
+}
+
 todo-input {
   margin-left: 48px;
 }
