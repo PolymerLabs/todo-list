@@ -25,6 +25,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
       font-size: 20px;
     }
+    .todo-item__row {
+      position: relative;
+    }
     .todo-item__checkbox {
       margin-right: 32px;
     }
@@ -39,14 +42,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin-top: 4px;
     }
     .todo-item__cancel-btn {
-      visibility: hidden;
-      vertical-align: middle;
-      padding: 0;
+      position: absolute;
+      top: -4px;
+      opacity: 0;
     }
-    /* If this element has a selected class (applied via parent), or if the user is hovering, show the delete icon */
-    :host(.iron-selected) .todo-item__cancel-btn,
-    :host:hover .todo-item__cancel-btn {
-      visibility: visible;
+    :host:hover .todo-item__cancel-btn,
+    .todo-item__checkbox[focused] ~ .todo-item__cancel-btn,
+    .todo-item__label:focus ~ .todo-item__cancel-btn,
+    .todo-item__cancel-btn[focused] {
+      opacity: 1;
     }
   </style>
   <template>
@@ -63,11 +67,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             contenteditable
             on-input="_checkChangesAndNotify">[[label]]</span>
 
-      <!-- <paper-icon-button icon="delete"
+      <paper-icon-button icon="delete"
                          class="todo-item__cancel-btn"
                          tabindex="0"
                          on-tap="_notifyCanceled">
-      </paper-icon-button> -->
+      </paper-icon-button>
     </paper-material>
   </template>
   <script>
