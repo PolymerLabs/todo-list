@@ -123,12 +123,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="all">
-              <todo-list todos="[[todos]]"
-                         on-todo-item-edited="editTodo"
-                         on-todo-item-checked-toggled="toggleTodo"
-                         on-todo-item-canceled="removeTodo">
-              </todo-list>
-
+              <todo-list todos="[[todos]]"></todo-list>
               <todo-input on-add-todo="addTodo"
                           on-reset-todos="resetTodos">
               </todo-input>

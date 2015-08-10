@@ -23,6 +23,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.addEventListener('dom-change', function() {
     console.log('Our app is ready to rock!');
 
+    // Listen for todo-list changes
+    document.addEventListener('todo-item-edited', this.editTodo.bind(this));
+    document.addEventListener('todo-item-checked-toggled', this.toggleTodo.bind(this));
+    document.addEventListener('todo-item-canceled', this.removeTodo.bind(this));
+
     // Create a connection to the Firebase database
     this.ref = new Firebase(FIREBASE_APP);
 
@@ -90,7 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var todo = childSnapshot.val();
       // Store a reference to the Firebase object so we can
       // easily remove this todo.
-      todo.$id = childSnapshot.key();
+      todo.uid = childSnapshot.key();
       // Use Polymer's push method to add the child
       // to the todos array. This is to notify observers
       this.push('todos', todo);
@@ -105,22 +110,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
   };
 
-  // Find todo by index, then remove from Firebase
-  app.removeTodo = function(e, detail) {
-    var todo = this.todos[detail.index];
-    this.userRef.child(todo.$id).remove();
+  // Remove todo from Firebase usings its unique ID
+  app.removeTodo = function(e) {
+    var uid = e.detail.uid;
+    if (uid) {
+      this.userRef.child(uid).remove();
+    } else {
+      throw new Error('Could not find todo with uid ' + uid);
+    }
   };
 
-  // Find todo by index, then update its isComplete value in Firebase
-  app.toggleTodo = function(e, detail) {
-    var todo = this.todos[detail.index];
-    this.userRef.child(todo.$id).update({isComplete: detail.isComplete});
+  // Toggle isComplete state of todo in Firebase using its unique ID
+  app.toggleTodo = function(e) {
+    var uid = e.detail.uid;
+    var isComplete = e.detail.isComplete;
+    if (uid) {
+      this.userRef.child(uid).update({isComplete: isComplete});
+    } else {
+      throw new Error('Could not find todo with uid ' + uid);
+    }
   };
 
   // Find todo by index, then update its label value in Firebase
-  app.editTodo = function(e, detail) {
-    var todo = this.todos[detail.index];
-    this.userRef.child(todo.$id).update({label: detail.label});
+  app.editTodo = function(e) {
+    var uid = e.detail.uid;
+    var label = e.detail.label;
+    if (uid) {
+      this.userRef.child(uid).update({label: label});
+    } else {
+      throw new Error('Could not find todo with uid ' + uid);
+    }
   };
 
   // Remove all completed todos from Firebase
@@ -129,7 +148,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.clearCompletedTodos = function() {
     this.todos.forEach(function(todo) {
       if (todo.isComplete) {
-        this.userRef.child(todo.$id).remove();
+        this.userRef.child(todo.uid).remove();
       }
     }.bind(this));
   };

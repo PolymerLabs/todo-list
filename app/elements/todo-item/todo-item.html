@@ -86,7 +86,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: false
         },
         label: String,
-        index: Number
+        uid: String
       },
       // Handler for contenteditable events. Check to see if the
       // todo label was changed. If so, dispatch an event with the
@@ -95,22 +95,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var newLabel = this.$['todoItemLabel'].textContent;
         if (newLabel !== this.label) {
           this.fire('todo-item-edited', {
-            index: this.index,
-            label: newTodo
+            uid: this.uid,
+            label: newLabel
           });
         }
       },
       // Fire an event when the user toggles the checkbox
       _notifyCheckedToggled: function() {
         this.fire('todo-item-checked-toggled', {
-          index: this.index,
+          uid: this.uid,
           isComplete: this.$.checkbox.checked
         });
       },
       // Fire an event when the user cancels a todo
       _notifyCanceled: function() {
         this.fire('todo-item-canceled', {
-          index: this.index
+          uid: this.uid
         });
       }
     });
