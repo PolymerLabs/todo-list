@@ -32,7 +32,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       --paper-input-container-input: {
         font-size: 20px;
         font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-        color: #9E9E9E;
       };
       --paper-input-container-underline: {
         top: 7px;
@@ -42,14 +41,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         top: 7px;
       };
     }
+    .todo-input__input[focused] + .todo-input__add-btn,
+    .todo-input__add-btn[focused] {
+      background: var(--default-primary-color);
+      color: var(--text-primary-color);
+    }
     .todo-input__add-btn {
       background: #E0E0E0;
       color: #9E9E9E;
       font-size: 14px;
     }
+    .todo-input__add-btn[focused] {
+
+    }
   </style>
   <template>
 
+    <!-- FIXME: noLabelFloat doesn't seem to work -->
+    <!-- https://github.com/PolymerElements/paper-input/issues/139 -->
     <paper-input id="todoInput"
                  class="todo-input__input"
                  noLabelFloat
@@ -71,8 +80,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       'enter': 'add'
     },
     add: function() {
-      this.fire('add-todo', {value: this.$.todoInput.value});
-      this.$.todoInput.value = null;
+      if (this.$.todoInput.value) {
+        this.fire('add-todo', {value: this.$.todoInput.value});
+        this.$.todoInput.value = null;
+      }
     }
   });
 </script>
