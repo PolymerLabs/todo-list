@@ -45,6 +45,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       position: absolute;
       top: -4px;
       opacity: 0;
+      /* Odd hack to fix cropped paper-ripple focus state */
+      font-size: 15px;
     }
     :host:hover .todo-item__cancel-btn,
     .todo-item__checkbox[focused] ~ .todo-item__cancel-btn,
