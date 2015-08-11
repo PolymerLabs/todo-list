@@ -60,18 +60,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-material elevation="0"
                     class="todo-item__row layout horizontal center-center">
 
+      <!-- Note the use of $= for aria-labelledby. This is because there's
+      no corresponding js property so we need to write a literal attribute
+      value, which is what $= does. -->
       <paper-checkbox id="checkbox"
                       class="todo-item__checkbox"
                       checked="[[isComplete]]"
+                      aria-labelledby$="[[_computeLabelId(uid)]]"
                       on-tap="_notifyCheckedToggled"></paper-checkbox>
 
-      <span id="todoItemLabel"
+      <span id="[[_computeLabelId(uid)]]"
             class="todo-item__label flex"
             contenteditable
             on-input="_checkChangesAndNotify">[[label]]</span>
 
       <paper-icon-button icon="delete"
                          class="todo-item__cancel-btn"
+                         aria-label="Delete Todo"
                          tabindex="0"
                          on-tap="_notifyCanceled">
       </paper-icon-button>
@@ -88,11 +93,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         label: String,
         uid: String
       },
+      _computeLabelId: function(uid) {
+        return 'todoItemLabel-' + uid;
+      },
       // Handler for contenteditable events. Check to see if the
       // todo label was changed. If so, dispatch an event with the
       // new label
       _checkChangesAndNotify: function() {
-        var newLabel = this.$.todoItemLabel.textContent;
+        var newLabel = Polymer.dom(this.root).querySelector('.todo-item__label').textContent;
         if (newLabel !== this.label) {
           this.fire('todo-item-edited', {
             uid: this.uid,
