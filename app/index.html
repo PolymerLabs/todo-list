@@ -72,17 +72,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Drawer Content -->
         <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
-          <a data-route="all" href="/">
+          <!-- Give anchors a tabindex to work around https://github.com/PolymerElements/iron-menu-behavior/issues/19 -->
+          <a data-route="all" href="/" tabindex="-1">
             <iron-icon icon="assignment"></iron-icon>
             <span>All Todos</span>
           </a>
 
-          <a data-route="active" href="/active">
+          <a data-route="active" href="/active" tabindex="-1">
             <iron-icon icon="assignment-late"></iron-icon>
             <span>Active</span>
           </a>
 
-          <a data-route="completed" href="/completed">
+          <a data-route="completed" href="/completed" tabindex="-1">
             <iron-icon icon="assignment-turned-in"></iron-icon>
             <span>Completed</span>
           </a>
