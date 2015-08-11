@@ -19,7 +19,6 @@
     "Polymer": true,
     "Platform": true,
     "page": true,
-    "app": true,
-    "Firebase": true
+    "app": true
   }
 }

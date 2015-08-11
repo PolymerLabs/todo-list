@@ -13,6 +13,11 @@ body {
   color: #333;
 }
 
+
+#signInDialog {
+  padding: 32px;
+}
+
 .clear-btn {
   font-size: 14px;
 }

@@ -54,7 +54,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     color: var(--secondary-text-color);
     background-color: var(--drawer-menu-color);
     border-bottom: var(--drawer-toolbar-border-color);
-    height: 64px;
+  }
+
+  paper-scroll-header-panel {
+    height: 100%;
   }
 
   paper-material {
@@ -97,14 +100,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     padding: 0 16px;
   }
 
-  #mainToolbar .middle {
+  #mainToolbar .middle-container {
+    height: 100%;
     margin-left: 48px;
   }
 
-  #mainToolbar.has-shadow .middle {
-    font-size: 20px;
+  #mainToolbar:not(.tall) .middle {
+    font-size: 18px;
     padding-bottom: 0;
-    margin-left: 48px;
   }
 
   .app-name {
@@ -115,10 +118,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   /* Height of the scroll area */
   .content {
     height: 900px;
-  }
-
-  #signInDialog {
-    padding: 32px;
   }
 
   /* Breakpoints */
