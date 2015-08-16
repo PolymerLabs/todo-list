@@ -50,14 +50,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       font-size: 15px;
     }
     :host:hover .todo-item__cancel-btn,
-    .todo-item__checkbox[focused] ~ .todo-item__cancel-btn,
-    .todo-item__label:focus ~ .todo-item__cancel-btn,
-    .todo-item__cancel-btn[focused] {
+    :host([active]) .todo-item__cancel-btn {
       opacity: 1;
     }
   </style>
   <template>
-    <paper-material elevation="0"
+    <paper-material elevation="[[_computeElevation(active)]]"
                     class="todo-item__row layout horizontal center-center">
 
       <!-- Note the use of $= for aria-labelledby. This is because there's
@@ -91,7 +89,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: false
         },
         label: String,
-        uid: String
+        uid: String,
+
+        // Used to show when one of the child elements has focus. Causes
+        // paper-material to elevate
+        active: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
+      },
+      attached: function() {
+        // Delegate focus events with useCapture to figure out if one of our
+        // child elements is being focused or if we're about to blur
+        this.addEventListener('focus', this._activate.bind(this), true);
+        this.addEventListener('blur', this._deactivate.bind(this), true);
+        this.addEventListener('mouseenter', this._activate.bind(this));
+        this.addEventListener('mouseleave', this._deactivate.bind(this));
+      },
+      detached: function() {
+        this.removeEventListener('focus', this._activate.bind(this), true);
+        this.removeEventListener('blur', this._deactivate.bind(this), true);
+        this.removeEventListener('mouseenter', this._activate.bind(this));
+        this.removeEventListener('mouseleave', this._deactivate.bind(this));
+      },
+      _activate: function() {
+        this.active = true;
+      },
+      _deactivate: function() {
+        this.active = false;
+      },
+      _computeElevation: function(active) {
+        return this.active ? 2 : 0;
       },
       _computeLabelId: function(uid) {
         return 'todoItemLabel-' + uid;

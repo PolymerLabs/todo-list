@@ -26,16 +26,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <template>
     <p hidden="{{_todosEmpty(todos.length)}}">No more todos!</p>
-    <iron-selector id="selector">
-      <template is="dom-repeat" items="[[todos]]"
-                                filter="_byState"
-                                observe="isComplete">
-        <todo-item label="[[item.label]]"
-                   is-complete="[[item.isComplete]]"
-                   uid="[[item.uid]]">
-        </todo-item>
-      </template>
-    </iron-selector>
+    <template is="dom-repeat"
+              id="repeater"
+              items="[[todos]]"
+              filter="_byState"
+              observe="isComplete">
+      <todo-item label="[[item.label]]"
+                 is-complete="[[item.isComplete]]"
+                 uid="[[item.uid]]">
+      </todo-item>
+    </template>
   </template>
   <script>
     Polymer({
@@ -50,15 +50,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       listeners: {
         'todo-item-canceled': '_resetSelected'
       },
-
-      // BLOG: This is pretty tricky and annoying. I thought
-      // property observers would work but they don't
-      // TODO: Understand the path arguments better
-      // https://www.polymer-project.org/1.0/docs/devguide/properties.html#deep-observation
-      // observers: [
-      //   '_todosRearranged(todos.*)'
-      // ],
-
       _todosEmpty: function(length) {
         return !!length;
       },
@@ -76,15 +67,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           default:
             return true;
         }
-      },
-      // When a todo item is canceled, it will be removed from the list
-      // so we need to tell iron-selector to go back to having no children
-      // selected. We do this async because iron-selector seems to set selected
-      // after todo-item-canceled fires (possibly the click event comes later).
-      _resetSelected: function() {
-        this.async(function() {
-          this.$.selector.selected = null;
-        }.bind(this));
       }
     });
   </script>
