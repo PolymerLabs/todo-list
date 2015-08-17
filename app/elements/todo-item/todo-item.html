@@ -115,7 +115,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.active = false;
       },
       _computeElevation: function(active) {
-        return this.active ? 2 : 0;
+        return active ? 2 : 0;
       },
       _computeLabelId: function(uid) {
         return 'todoItemLabel-' + uid;
