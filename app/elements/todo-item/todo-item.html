@@ -20,30 +20,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <style>
     :host {
       display: block;
-      min-height: 50px;
       box-sizing: border-box;
+      min-height: 50px;
       font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
       font-size: 1rem;
     }
     .todo-item__row {
       position: relative;
+      padding: 16px 16px 16px 22px;
     }
     .todo-item__checkbox {
+      /* Checkbox has 8px of extra space on top so have to tweak it to center */
+      margin-top: -4px;
       margin-right: 32px;
     }
     .todo-item__checkbox[checked] + .todo-item__label {
-      display: inline-block;
-      vertical-align: middle;
       color: #9E9E9E;
       text-decoration: line-through;
     }
-    /* Checkbox has 8px of extra space on top so we have to account for that */
-    .todo-item__label {
-      margin-top: 4px;
-    }
     .todo-item__cancel-btn {
-      position: absolute;
-      top: -4px;
       opacity: 0;
       /* Odd hack to fix cropped paper-ripple focus state */
       /* https://github.com/PolymerElements/paper-icon-button/issues/33 */
@@ -56,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <template>
     <paper-material elevation="[[_computeElevation(active)]]"
-                    class="todo-item__row layout horizontal center-center">
+                    class="todo-item__row layout horizontal center">
 
       <!-- Note the use of $= for aria-labelledby. This is because there's
       no corresponding js property so we need to write a literal attribute
