@@ -102,6 +102,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }.bind(this));
   };
 
+  // If the app starts up with no todos in localstorage, let's generate
+  // some fake ones for the user
+  app.createDefaultTodos = function() {
+    this.todos = [
+      {
+        label: 'Write your first todo!',
+        isComplete: false
+      },
+      {
+        label: 'Go watch some Polycasts',
+        isComplete: false
+      },
+      {
+        label: 'Check out Polymer Starter Kit',
+        isComplete: false
+      }
+    ];
+  };
+
   // Add todo to Firebase
   app.addTodo = function(e, detail) {
     this.userRef.push({

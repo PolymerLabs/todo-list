@@ -173,8 +173,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- Backfill todos from localstorage. This prevents an initial flash while
          we're waiting to hear from Firebase, and it lets the user see their
-         old todos if they start the app offline -->
+         old todos if they start the app offline.
+         This SHOULD NOT write to Firebase. If the user has cleared their
+         localstorage, it will not nullify everything saved in Firebase. -->
     <iron-localstorage name="polymer-todo"
+                       on-iron-localstorage-load-empty="createDefaultTodos"
                        value="{{todos}}">
     </iron-localstorage>
 
