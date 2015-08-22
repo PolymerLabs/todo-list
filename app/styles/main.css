@@ -39,7 +39,7 @@ todo-input {
   cursor: pointer;
 }
 
-.google-sign-in__icon {
+.google-sign-in-icon {
   background: url('/images/google-sign-in/g-normal.png') transparent 5px 50% no-repeat;
   display: inline-block;
   vertical-align: middle;
@@ -48,7 +48,7 @@ todo-input {
   border-right: #2265d4 1px solid;
 }
 
-.google-sign-in__button-text {
+.google-sign-in-label {
   display: inline-block;
   vertical-align: middle;
   padding-left: 42px;
