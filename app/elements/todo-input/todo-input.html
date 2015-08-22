@@ -16,7 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host {
       display: block;
     }
-    .todo-input__input {
+    paper-input {
       display: inline-block;
       width: 65%;
       --paper-input-container: {
@@ -41,17 +41,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         top: 7px;
       };
     }
-    .todo-input__input[focused] + .todo-input__add-btn,
-    .todo-input__add-btn[focused] {
+    paper-input[focused] + paper-button,
+    paper-button[focused] {
       background: var(--default-primary-color);
       color: var(--text-primary-color);
     }
-    .todo-input__add-btn {
+    paper-button {
       background: #E0E0E0;
       color: #9E9E9E;
       font-size: 0.875rem; /* 14px */
     }
-    .todo-input__add-btn[focused] {
+    paper-button[focused] {
       /* https://github.com/robdodson/paper-button/pull/1 */
       outline-width: 3px;
     }
@@ -59,15 +59,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
 
     <paper-input id="todoInput"
-                 class="todo-input__input"
                  no-label-float
                  label="Add an item">
     </paper-input>
 
-    <paper-button class="todo-input__add-btn"
-                  on-tap="add">
-                  Add
-    </paper-button>
+    <paper-button on-tap="add">Add</paper-button>
 
   </template>
 </dom-module>
