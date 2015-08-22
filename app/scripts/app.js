@@ -26,7 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // Listen for todo-list changes
     document.addEventListener('todo-item-edited', this.editTodo.bind(this));
     document.addEventListener('todo-item-checked-toggled', this.toggleTodo.bind(this));
-    document.addEventListener('todo-item-canceled', this.removeTodo.bind(this));
+    document.addEventListener('todo-item-deleted', this.removeTodo.bind(this));
 
     // Create a connection to the Firebase database
     this.ref = new Firebase(FIREBASE_APP);

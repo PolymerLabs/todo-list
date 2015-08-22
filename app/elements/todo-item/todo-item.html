@@ -12,9 +12,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../todo-icons/todo-icons.html">
 
 <dom-module id="todo-item">
   <style>
@@ -25,53 +25,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
       font-size: 1rem;
     }
-    .todo-item__row {
+    .row {
       position: relative;
       padding: 16px 16px 16px 22px;
     }
-    .todo-item__checkbox {
+    .checkbox {
       /* Checkbox has 8px of extra space on top so have to tweak it to center */
       margin-top: -4px;
       margin-right: 32px;
     }
-    .todo-item__checkbox[checked] + .todo-item__label {
+    .checkbox[checked] + .label {
       color: #9E9E9E;
       text-decoration: line-through;
     }
-    .todo-item__cancel-btn {
+    .btn-cancel {
       opacity: 0;
       /* Odd hack to fix cropped paper-ripple focus state */
       /* https://github.com/PolymerElements/paper-icon-button/issues/33 */
       font-size: 15px;
     }
-    :host:hover .todo-item__cancel-btn,
-    :host([active]) .todo-item__cancel-btn {
+    :host:hover .btn-cancel,
+    :host([active]) .btn-cancel {
       opacity: 1;
     }
   </style>
   <template>
     <paper-material elevation="[[_computeElevation(active)]]"
-                    class="todo-item__row layout horizontal center">
+                    class="row layout horizontal center">
 
       <!-- Note the use of $= for aria-labelledby. This is because there's
       no corresponding js property so we need to write a literal attribute
       value, which is what $= does. -->
       <paper-checkbox id="checkbox"
-                      class="todo-item__checkbox"
+                      class="checkbox"
                       checked="[[todo.isComplete]]"
                       aria-labelledby$="[[_computeLabelId(todo.uid)]]"
-                      on-tap="_notifyCheckedToggled"></paper-checkbox>
+                      on-tap="_onChecked"></paper-checkbox>
 
       <span id="[[_computeLabelId(todo.uid)]]"
-            class="todo-item__label flex"
+            class="label flex"
             contenteditable
-            on-input="_checkChangesAndNotify">[[todo.label]]</span>
+            on-input="_onLabelChanged">[[todo.label]]</span>
 
-      <paper-icon-button icon="delete"
-                         class="todo-item__cancel-btn"
+      <paper-icon-button icon="todo-icons:delete"
+                         class="btn-cancel"
                          aria-label="Delete Todo"
                          tabindex="0"
-                         on-tap="_notifyCanceled">
+                         on-tap="_onDelete">
       </paper-icon-button>
     </paper-material>
   </template>
@@ -92,6 +92,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       attached: function() {
         // Delegate focus events with useCapture to figure out if one of our
         // child elements is being focused or if we're about to blur
+        // All of this fanciness is for the sake of the raised paper effect
         this.addEventListener('focus', this._activate.bind(this), true);
         this.addEventListener('blur', this._deactivate.bind(this), true);
         this.addEventListener('mouseenter', this._activate.bind(this));
@@ -118,9 +119,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Handler for contenteditable events. Check to see if the
       // todo label was changed. If so, dispatch an event with the
       // new label
-      _checkChangesAndNotify: function() {
+      _onLabelChanged: function() {
         // Using Polymer.dom because the id is generated
-        var newLabel = Polymer.dom(this.root).querySelector('.todo-item__label').textContent;
+        var newLabel = Polymer.dom(this.root).querySelector('.label').textContent;
         if (newLabel !== this.todo.label) {
           this.fire('todo-item-edited', {
             uid: this.todo.uid,
@@ -129,15 +130,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       // Fire an event when the user toggles the checkbox
-      _notifyCheckedToggled: function() {
+      _onChecked: function() {
         this.fire('todo-item-checked-toggled', {
           uid: this.todo.uid,
           isComplete: this.$.checkbox.checked
         });
       },
-      // Fire an event when the user cancels a todo
-      _notifyCanceled: function() {
-        this.fire('todo-item-canceled', {
+      // Fire an event when the user deletes a todo
+      _onDelete: function() {
+        this.fire('todo-item-deleted', {
           uid: this.todo.uid
         });
       }
