@@ -74,17 +74,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
           <!-- Give anchors a tabindex to work around https://github.com/PolymerElements/iron-menu-behavior/issues/19 -->
           <a data-route="all" href="/" tabindex="-1">
-            <iron-icon icon="assignment"></iron-icon>
+            <iron-icon icon="todo-icons:assignment"></iron-icon>
             <span>All Todos</span>
           </a>
 
           <a data-route="active" href="/active" tabindex="-1">
-            <iron-icon icon="assignment-late"></iron-icon>
+            <iron-icon icon="todo-icons:assignment-late"></iron-icon>
             <span>Active</span>
           </a>
 
           <a data-route="completed" href="/completed" tabindex="-1">
-            <iron-icon icon="assignment-turned-in"></iron-icon>
+            <iron-icon icon="todo-icons:assignment-turned-in"></iron-icon>
             <span>Completed</span>
           </a>
         </paper-menu>
@@ -93,7 +93,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Toolbar -->
         <paper-toolbar id="mainToolbar">
-          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+          <paper-icon-button id="paperToggle" icon="todo-icons:menu" paper-drawer-toggle></paper-icon-button>
           <span class="flex"></span>
 
           <!-- Application name -->
@@ -106,7 +106,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               Clear Completed
             </paper-button>
 
-            <iron-icon icon="account-circle"
+            <iron-icon icon="todo-icons:account-circle"
                        on-tap="signOut">
             </iron-icon>
 
