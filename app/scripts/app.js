@@ -100,6 +100,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // to the todos array. This is to notify observers
       this.push('todos', todo);
     }.bind(this));
+    // Backup todos to localstorage
+    this.backupTodos = this.todos.slice();
+  };
+
+  // Backfill todos from localstorage when the app first boots up
+  app.backfillTodos = function() {
+    this.todos = this.backupTodos.slice();
   };
 
   // If the app starts up with no todos in localstorage, let's generate
