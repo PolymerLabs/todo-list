@@ -9,7 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../todo-item/todo-item.html">
 
 <dom-module id="todo-list">
@@ -25,16 +24,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <p hidden="{{_todosEmpty(todos.length)}}">No more todos!</p>
+    <p hidden="[[_todosEmpty(todos.length)]]">No more todos!</p>
     <template is="dom-repeat"
               id="repeater"
               items="[[todos]]"
+              as="todo"
               filter="_byState"
               observe="isComplete">
-      <todo-item label="[[item.label]]"
-                 is-complete="[[item.isComplete]]"
-                 uid="[[item.uid]]">
-      </todo-item>
+      <todo-item todo="[[todo]]"></todo-item>
     </template>
   </template>
   <script>
@@ -53,15 +50,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _todosEmpty: function(length) {
         return !!length;
       },
-      _byState: function(item) {
+      _byState: function(todo) {
         switch(this.filterBy) {
           // Only display active todos
           case 'active':
-            return item.isComplete === false;
+            return todo.isComplete === false;
 
           // Only display completed todos
           case 'completed':
-            return item.isComplete === true;
+            return todo.isComplete === true;
 
           // Default to display all todos
           default:

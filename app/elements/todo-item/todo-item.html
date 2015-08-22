@@ -58,14 +58,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       value, which is what $= does. -->
       <paper-checkbox id="checkbox"
                       class="todo-item__checkbox"
-                      checked="[[isComplete]]"
-                      aria-labelledby$="[[_computeLabelId(uid)]]"
+                      checked="[[todo.isComplete]]"
+                      aria-labelledby$="[[_computeLabelId(todo.uid)]]"
                       on-tap="_notifyCheckedToggled"></paper-checkbox>
 
-      <span id="[[_computeLabelId(uid)]]"
+      <span id="[[_computeLabelId(todo.uid)]]"
             class="todo-item__label flex"
             contenteditable
-            on-input="_checkChangesAndNotify">[[label]]</span>
+            on-input="_checkChangesAndNotify">[[todo.label]]</span>
 
       <paper-icon-button icon="delete"
                          class="todo-item__cancel-btn"
@@ -79,12 +79,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'todo-item',
       properties: {
-        isComplete: {
-          type: Boolean,
-          value: false
-        },
-        label: String,
-        uid: String,
+        todo: Object,
 
         // Used to show when one of the child elements has focus. Causes
         // paper-material to elevate
@@ -124,10 +119,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // todo label was changed. If so, dispatch an event with the
       // new label
       _checkChangesAndNotify: function() {
+        // Using Polymer.dom because the id is generated
         var newLabel = Polymer.dom(this.root).querySelector('.todo-item__label').textContent;
-        if (newLabel !== this.label) {
+        if (newLabel !== this.todo.label) {
           this.fire('todo-item-edited', {
-            uid: this.uid,
+            uid: this.todo.uid,
             label: newLabel
           });
         }
@@ -135,14 +131,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Fire an event when the user toggles the checkbox
       _notifyCheckedToggled: function() {
         this.fire('todo-item-checked-toggled', {
-          uid: this.uid,
+          uid: this.todo.uid,
           isComplete: this.$.checkbox.checked
         });
       },
       // Fire an event when the user cancels a todo
       _notifyCanceled: function() {
         this.fire('todo-item-canceled', {
-          uid: this.uid
+          uid: this.todo.uid
         });
       }
     });
