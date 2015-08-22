@@ -171,7 +171,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </platinum-sw-cache>
     </platinum-sw-register>
 
-    <!-- TODO: Figure out whether if this should be two-way bound or called from app.js -->
+    <!-- Backfill todos from localstorage. This prevents an initial flash while
+         we're waiting to hear from Firebase, and it lets the user see their
+         old todos if they start the app offline -->
     <iron-localstorage name="polymer-todo"
                        value="{{todos}}">
     </iron-localstorage>
