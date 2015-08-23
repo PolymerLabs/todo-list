@@ -7,10 +7,14 @@
     "platinum-elements": "PolymerElements/platinum-elements#^1.0.1",
     "neon-elements": "PolymerElements/neon-elements#^1.0.0",
     "page": "visionmedia/page.js#^1.6.3",
-    "firebase-element": "GoogleWebComponents/firebase-element#^1.0.1"
+    "firebase-element": "GoogleWebComponents/firebase-element#^1.0.1",
+    "paper-button": "PolymerElements/paper-button#04cd4de3c36c0d4d8eabf7e06a773bc5a5767fc5"
   },
   "devDependencies": {
     "web-component-tester": "*",
     "test-fixture": "PolymerElements/test-fixture#^1.0.0"
+  },
+  "resolutions": {
+    "paper-button": "04cd4de3c36c0d4d8eabf7e06a773bc5a5767fc5"
   }
 }
