@@ -127,7 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Handler for contenteditable events. Check to see if the
       // todo label was changed. If so, dispatch an event with the
       // new label
-      _checkLabelChanged: function() {
+      _checkLabelChanged: function(e) {
         // Using Polymer.dom because the id is generated
         var newLabel = e.currentTarget.textContent;
         if (newLabel !== this.todo.label) {
