@@ -11,7 +11,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../todo-icons/todo-icons.html">
@@ -39,7 +38,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       text-decoration: line-through;
     }
     .label:focus {
-      outline-color: var(--default-primary-color);
+      outline: none;
+      border-bottom: 1px solid;
+      border-color: var(--default-primary-color);
     }
     .btn-cancel {
       opacity: 0;
@@ -66,18 +67,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       class="checkbox"
                       checked="[[todo.isComplete]]"
                       aria-labelledby$="[[_computeLabelId(todo.uid)]]"
-                      on-tap="_onChecked"></paper-checkbox>
+                      on-tap="_notifyCheckToggled"></paper-checkbox>
 
       <span id="[[_computeLabelId(todo.uid)]]"
             class="label flex"
             contenteditable
-            on-input="_onLabelChanged">[[todo.label]]</span>
+            on-input="_checkLabelChanged"
+            on-keypress="_checkConfirmation">[[todo.label]]</span>
 
       <paper-icon-button icon="todo-icons:delete"
                          class="btn-cancel"
                          aria-label="Delete Todo"
                          tabindex="0"
-                         on-tap="_onDelete">
+                         on-tap="_notifyDeleted">
       </paper-icon-button>
     </paper-material>
   </template>
@@ -125,7 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Handler for contenteditable events. Check to see if the
       // todo label was changed. If so, dispatch an event with the
       // new label
-      _onLabelChanged: function() {
+      _checkLabelChanged: function() {
         // Using Polymer.dom because the id is generated
         var newLabel = Polymer.dom(this.root).querySelector('.label').textContent;
         if (newLabel !== this.todo.label) {
@@ -136,14 +138,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       // Fire an event when the user toggles the checkbox
-      _onChecked: function() {
+      _notifyCheckToggled: function() {
         this.fire('todo-item-checked-toggled', {
           uid: this.todo.uid,
           isComplete: this.$.checkbox.checked
         });
       },
+      // If enter was pressed, unfocus the text input
+      _checkConfirmation: function(e) {
+        if (e.keyCode === 13) {
+          e.preventDefault();
+          e.currentTarget.blur();
+        }
+      },
       // Fire an event when the user deletes a todo
-      _onDelete: function() {
+      _notifyDeleted: function() {
         this.fire('todo-item-deleted', {
           uid: this.todo.uid
         });
