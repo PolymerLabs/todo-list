@@ -40,6 +40,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
     .btn-cancel {
       opacity: 0;
+      /* Same as paper-material shadow */
+      /*https://github.com/PolymerElements/paper-styles/blob/master/shadow.html#L17*/
+      transition: opacity 0.28s;
       /* Odd hack to fix cropped paper-ripple focus state */
       /* https://github.com/PolymerElements/paper-icon-button/issues/33 */
       font-size: 15px;
