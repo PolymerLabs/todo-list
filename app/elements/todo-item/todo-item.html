@@ -129,7 +129,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // new label
       _checkLabelChanged: function() {
         // Using Polymer.dom because the id is generated
-        var newLabel = Polymer.dom(this.root).querySelector('.label').textContent;
+        var newLabel = e.currentTarget.textContent;
         if (newLabel !== this.todo.label) {
           this.fire('todo-item-edited', {
             uid: this.todo.uid,
