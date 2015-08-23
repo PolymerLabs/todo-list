@@ -28,19 +28,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       position: relative;
       padding: 16px 16px 16px 22px;
     }
-    .checkbox {
+    paper-checkbox {
       /* Checkbox has 8px of extra space on top so have to tweak it to center */
       margin-top: -4px;
-      margin-right: 32px;
+      margin-right: 20px;
     }
-    .checkbox[checked] + .label {
+    paper-checkbox[checked] + .label {
       color: #9E9E9E;
       text-decoration: line-through;
     }
-    .label:focus {
-      outline: none;
-      border-bottom: 1px solid;
-      border-color: var(--default-primary-color);
+    paper-input {
+      margin-top: 4px;
+      --paper-input-container-label: {
+        font-size: 1rem;
+        font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        color: var(--primary-text-color);
+      };
+      --paper-input-container-underline: {
+        background: transparent;
+      }
     }
     .btn-cancel {
       opacity: 0;
@@ -64,16 +70,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       no corresponding js property so we need to write a literal attribute
       value, which is what $= does. -->
       <paper-checkbox id="checkbox"
-                      class="checkbox"
                       checked="[[todo.isComplete]]"
                       aria-labelledby$="[[_computeLabelId(todo.uid)]]"
                       on-tap="_notifyCheckToggled"></paper-checkbox>
 
-      <span id="[[_computeLabelId(todo.uid)]]"
-            class="label flex"
-            contenteditable
-            on-input="_checkLabelChanged"
-            on-keypress="_checkConfirmation">[[todo.label]]</span>
+      <paper-input id="[[_computeLabelId(todo.uid)]]"
+                   class="flex"
+                   value="[[todo.label]]"
+                   no-label-float
+                   on-input="_onLabelChanged"
+                   on-keypress="_checkConfirmation"></paper-input>
 
       <paper-icon-button icon="todo-icons:delete"
                          class="btn-cancel"
@@ -127,9 +133,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Handler for contenteditable events. Check to see if the
       // todo label was changed. If so, dispatch an event with the
       // new label
-      _checkLabelChanged: function(e) {
+      _onLabelChanged: function(e) {
         // Using Polymer.dom because the id is generated
-        var newLabel = e.currentTarget.textContent;
+        var newLabel = e.currentTarget.value;
         if (newLabel !== this.todo.label) {
           this.fire('todo-item-edited', {
             uid: this.todo.uid,
