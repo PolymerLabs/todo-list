@@ -62,98 +62,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
 
-    <paper-drawer-panel id="paperDrawerPanel">
-      <div drawer>
+    <todo-data user="{{user}}"></todo-data>
 
-        <!-- Drawer Toolbar -->
-        <paper-toolbar id="drawerToolbar"></paper-toolbar>
-
-        <!-- Drawer Content -->
-        <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
-          <!-- Give anchors a tabindex to work around https://github.com/PolymerElements/iron-menu-behavior/issues/19 -->
-          <a data-route="all" href="/" tabindex="-1">
-            <iron-icon icon="todo-icons:assignment"></iron-icon>
-            <span>All Todos</span>
-          </a>
-
-          <a data-route="active" href="/active" tabindex="-1">
-            <iron-icon icon="todo-icons:assignment-late"></iron-icon>
-            <span>Active</span>
-          </a>
-
-          <a data-route="completed" href="/completed" tabindex="-1">
-            <iron-icon icon="todo-icons:assignment-turned-in"></iron-icon>
-            <span>Completed</span>
-          </a>
-        </paper-menu>
-      </div>
-      <paper-header-panel main>
-
-        <!-- Main Toolbar -->
-        <paper-toolbar id="mainToolbar">
-          <paper-icon-button id="paperToggle" icon="todo-icons:menu" paper-drawer-toggle></paper-icon-button>
-          <span class="flex"></span>
-
-          <!-- Application name -->
-          <div class="middle middle-container center horizontal layout flex">
-
-            <div class="app-name flex">Todos</div>
-
-            <paper-button class="clear-btn"
-                          on-tap="clearCompletedTodos">
-              Clear Completed
-            </paper-button>
-
-            <iron-icon icon="todo-icons:account-circle"
-                       on-tap="signOut">
-            </iron-icon>
-
-          </div>
-
-        </paper-toolbar>
-
-        <!-- Main Content -->
-        <div class="content">
-          <iron-pages attr-for-selected="data-route" selected="{{route}}">
-
-            <section data-route="all">
-              <todo-list todos="[[todos]]"></todo-list>
-              <todo-input on-add-todo="addTodo"
-                          on-reset-todos="resetTodos">
-              </todo-input>
-            </section>
-
-            <section data-route="active">
-              <todo-list todos="[[todos]]"
-                         filter-by="active">
-              </todo-list>
-            </section>
-
-            <section data-route="completed">
-              <todo-list todos="[[todos]]"
-                         filter-by="completed">
-              </todo-list>
-            </section>
-
-          </iron-pages>
-        </div>
-      </paper-header-panel>
-    </paper-drawer-panel>
-
-    <paper-dialog id="signInDialog"
-                  modal
-                  entry-animation="scale-up-animation"
-                  exit-animation="fade-out-animation">
-      <h2>Oh hai! Please sign in</h2>
-      <div>
-        <div class="google-sign-in"
-             tabindex="0"
-             on-tap="signIn">
-          <span class="google-sign-in-icon"></span>
-          <span class="google-sign-in-label">Google</span>
-        </div>
-      </div>
-    </paper-dialog>
+    <todo-view class="flex" route="{{route}}"></todo-view>
 
     <paper-toast id="caching-complete"
                  duration="6000"
@@ -174,11 +85,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          old todos if they start the app offline.
          This SHOULD NOT write to Firebase. If the user has cleared their
          localstorage, it should not nullify everything saved in Firebase. -->
-    <iron-localstorage name="polymer-todo"
+    <!-- <iron-localstorage name="polymer-todo"
                        on-iron-localstorage-load="backfillTodos"
                        on-iron-localstorage-load-empty="createDefaultTodos"
                        value="{{backupTodos}}">
-    </iron-localstorage>
+    </iron-localstorage> -->
 
   </template>
 

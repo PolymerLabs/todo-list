@@ -1,0 +1,106 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../todo-firebase/todo-firebase.html">
+<link rel="import" href="../todo-auth/todo-auth.html">
+
+<dom-module id="todo-data">
+
+  <template>
+
+    <todo-firebase location="https://polymer-todo.firebaseio.com" ref="{{ref}}"></todo-firebase>
+    <todo-auth ref="{{ref}}" user="{{user}}"></todo-auth>
+
+  </template>
+  <script>
+    Polymer({
+
+      is: 'todo-data',
+
+      properties: {
+
+        todos: {
+          notify: true
+        },
+
+        user: {
+          observer: '_userChanged',
+          notify: true
+        }
+
+      },
+
+      observers: [
+        '_dataChanged(todos.*)'
+      ],
+
+      created: function() {
+        this._collectTodosCb = this._collectTodos.bind(this);
+      },
+
+      _userChanged: function(user, old) {
+        if (this.userRef) {
+          this.userRef.off('value', this._collectTodosCb);
+        }
+        if (user) {
+          // Get their todo list
+          this.userRef = this.ref.child('users/' + user.uid);
+          // Listen for realtime changes
+          // This will be called any time state is changed in Firebase and
+          // will typically cause the list to rerender. Because most elements
+          // in the list remain the same, the dirty checking here is cheap
+          // ...or so kevinpschaaf tells me :D
+          // This makes Firebase the single source of truth for the app, meaning
+          // most/all components are pretty stateless. Which is awesome.
+          this.userRef.on('value', this._collectTodosCb);
+        }
+      },
+
+      _collectTodos: function(snapshot) {
+        var todo = function(snapshot) {
+          var todo = snapshot.val();
+          todo.ref = snapshot.ref();
+          return todo;
+        };
+        var todos = [];
+        snapshot.forEach(function(childSnapshot) {
+          // Store a reference to the Firebase object so we can
+          // easily operate on this todo.
+          todos.push(todo(childSnapshot));
+        });
+        // Replace our todos, this is so we can re-render
+        // without holding on to state
+        // This way Firebase becomes the single source of truth
+        this.todos = todos;
+      },
+
+      _dataChanged: function(info) {
+        var parts = info.path.split('.');
+        var property = parts.pop();
+        switch (property) {
+          case 'isComplete':
+          case 'label':
+            console.log('updating', property, 'to', info.value);
+            var update = {};
+            update[property] = info.value;
+            var todo = this.get(parts);
+            todo.ref.update(update);
+            break;
+          case '_deleted':
+            console.log('removing todo');
+            //todo.ref.remove();
+            break;
+        }
+      }
+
+    });
+
+  </script>
+</dom-module>
