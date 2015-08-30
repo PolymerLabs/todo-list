@@ -13,47 +13,10 @@ body {
   color: #333;
 }
 
-#signInDialog {
-  padding: 32px;
-}
-
 .clear-btn {
   font-size: 14px;
 }
 
 todo-input {
   margin-left: 76px;
-}
-
-.google-sign-in {
-  display: inline-block;
-  background: #4285f4;
-  color: white;
-  width: 190px;
-  border-radius: 5px;
-  white-space: nowrap;
-}
-
-.google-sign-in:hover {
-  cursor: pointer;
-}
-
-.google-sign-in-icon {
-  background: url('/images/google-sign-in/g-normal.png') transparent 5px 50% no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  width: 42px;
-  height: 42px;
-  border-right: #2265d4 1px solid;
-}
-
-.google-sign-in-label {
-  display: inline-block;
-  vertical-align: middle;
-  padding-left: 42px;
-  padding-right: 42px;
-  font-size: 14px;
-  font-weight: bold;
-  /* Use the Roboto font that is loaded in the <head> */
-  font-family: 'Roboto', sans-serif;
 }

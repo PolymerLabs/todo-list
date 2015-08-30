@@ -15,7 +15,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
 
+    <!-- 1. Connect to Firebase and establish a ref -->
     <todo-firebase location="https://polymer-todo.firebaseio.com" ref="{{ref}}"></todo-firebase>
+    <!-- 2. Once we have a ref, check if there is a user. If there isn't we'll
+            prompt sign-in -->
     <todo-auth ref="{{ref}}" user="{{user}}"></todo-auth>
 
   </template>
@@ -64,16 +67,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _collectTodos: function(snapshot) {
-        var todo = function(snapshot) {
+        var makeTodo = function(snapshot) {
           var todo = snapshot.val();
+          // Store a reference to the Firebase object so we can
+          // easily operate on this todo.
           todo.ref = snapshot.ref();
           return todo;
         };
         var todos = [];
         snapshot.forEach(function(childSnapshot) {
-          // Store a reference to the Firebase object so we can
-          // easily operate on this todo.
-          todos.push(todo(childSnapshot));
+          todos.push(makeTodo(childSnapshot));
         });
         // Replace our todos, this is so we can re-render
         // without holding on to state
@@ -82,21 +85,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _dataChanged: function(info) {
+        console.log('info', info);
         var parts = info.path.split('.');
+        console.log('parts', parts);
         var property = parts.pop();
+        console.log('property', property);
         switch (property) {
           case 'isComplete':
           case 'label':
             console.log('updating', property, 'to', info.value);
             var update = {};
             update[property] = info.value;
+            console.log('this.get', parts, '=', this.get(parts));
             var todo = this.get(parts);
             todo.ref.update(update);
             break;
-          case '_deleted':
+          case 'deleted':
             console.log('removing todo');
-            //todo.ref.remove();
+            todo.ref.remove();
             break;
+          case 'splices':
+            // Would it be better to fire an event and modify todo-data, or
+            // watch for splices changes, get the last child and update that way?
+            
+            // console.log('adding todo');
+            // console.log(info.value);
+            // this.userRef.push({
+            //   label: info.value,
+            //   isComplete: false
+            // });
         }
       }
 

@@ -62,9 +62,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
 
-    <todo-data user="{{user}}"></todo-data>
+    <todo-data user="{{user}}" todos="{{todos}}"></todo-data>
 
-    <todo-view class="flex" route="{{route}}"></todo-view>
+    <todo-view class="flex" route="{{route}}" todos="{{todos}}"></todo-view>
 
     <paper-toast id="caching-complete"
                  duration="6000"

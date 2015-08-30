@@ -220,22 +220,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="all">
-              <todo-list todos="[[todos]]"></todo-list>
-              <todo-input on-add-todo="addTodo"
-                          on-reset-todos="resetTodos">
-              </todo-input>
+              <todo-list todos="{{todos}}"></todo-list>
+              <todo-input on-add-todo="addTodo"></todo-input>
             </section>
 
             <section data-route="active">
-              <todo-list todos="[[todos]]"
+              <!-- <todo-list todos="{{todos}}"
                          filter-by="active">
-              </todo-list>
+              </todo-list> -->
             </section>
 
             <section data-route="completed">
-              <todo-list todos="[[todos]]"
+              <!-- <todo-list todos="{{todos}}"
                          filter-by="completed">
-              </todo-list>
+              </todo-list> -->
             </section>
 
           </iron-pages>
@@ -247,7 +245,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'todo-view',
       properties: {
-        route: String
+        route: String,
+        todos: Object
+      },
+      addTodo: function(e) {
+        this.push('todos', e.detail.value);
       }
     });
   </script>

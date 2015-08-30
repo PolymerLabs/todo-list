@@ -14,6 +14,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="todo-auth">
 
   <template>
+    <style>
+      paper-dialog {
+        padding: 32px;
+      }
+
+      .google-sign-in {
+        display: inline-block;
+        background: #4285f4;
+        color: white;
+        width: 190px;
+        border-radius: 5px;
+        white-space: nowrap;
+      }
+
+      .google-sign-in:hover {
+        cursor: pointer;
+      }
+
+      .google-sign-in-icon {
+        background: url('/images/google-sign-in/g-normal.png') transparent 5px 50% no-repeat;
+        display: inline-block;
+        vertical-align: middle;
+        width: 42px;
+        height: 42px;
+        border-right: #2265d4 1px solid;
+      }
+
+      .google-sign-in-label {
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: 42px;
+        padding-right: 42px;
+        font-size: 14px;
+        font-weight: bold;
+        /* Use the Roboto font that is loaded in the <head> */
+        font-family: 'Roboto', sans-serif;
+      }
+    </style>
     <paper-dialog modal
                   opened="{{!user}}"
                   entry-animation="scale-up-animation"
@@ -43,32 +81,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         user: {
-          observer: '_userChanged',
           notify: true
         }
 
       },
 
+      // Check to see if the user is already signed in
       _refChanged: function(ref) {
-        console.log('ref changed');
-        // Check to see if the user is already signed in
         this.user = this.ref.getAuth();
       },
 
-      _userChanged: function(user) {
-        console.log('user changed', user);
-      },
-
+      // Called in response to sign-in button tap
       signIn: function() {
         var fallback = function(ref) {
           // fall-back to browser redirects; pick up the session
           // automatically when we come back to the origin page
-          ref.authWithOAuthRedirect('github', function(error) {
+          ref.authWithOAuthRedirect('google', function(error) {
             console.warn('Login Failed!', error);
           });
         };
 
-        this.ref.authWithOAuthPopup('github', function(error, authData) {
+        this.ref.authWithOAuthPopup('google', function(error, authData) {
           if (authData) {
             this.user = authData;
           } else if (error && error.code === "TRANSPORT_UNAVAILABLE") {

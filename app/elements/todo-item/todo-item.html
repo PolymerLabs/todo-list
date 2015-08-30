@@ -70,22 +70,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       no corresponding js property so we need to write a literal attribute
       value, which is what $= does. -->
       <paper-checkbox id="checkbox"
-                      checked="[[todo.isComplete]]"
-                      aria-labelledby$="[[_computeLabelId(todo.uid)]]"
-                      on-tap="_notifyCheckToggled"></paper-checkbox>
+                      checked="{{isComplete}}"
+                      aria-labelledby$="[[_computeLabelId(todo.uid)]]"></paper-checkbox>
 
       <paper-input id="[[_computeLabelId(todo.uid)]]"
                    class="flex"
-                   value="[[todo.label]]"
+                   value="{{label}}"
                    no-label-float
-                   on-change="_onLabelChanged"
                    on-keypress="_checkConfirmation"></paper-input>
 
       <paper-icon-button icon="todo-icons:delete"
                          class="btn-cancel"
                          aria-label="Delete Todo"
                          tabindex="0"
-                         on-tap="_notifyDeleted">
+                         on-tap="_onDelete">
       </paper-icon-button>
     </paper-material>
   </template>
@@ -93,7 +91,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'todo-item',
       properties: {
-        todo: Object,
+        label: {
+          notify: true
+        },
+
+        isComplete: {
+          notify: true
+        },
+
+        deleted: {
+          notify: true
+        },
 
         // Used to show when one of the child elements has focus. Causes
         // paper-material to elevate
@@ -130,26 +138,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _computeLabelId: function(uid) {
         return 'todoItemLabel-' + uid;
       },
-      // Handler for contenteditable events. Check to see if the
-      // todo label was changed. If so, dispatch an event with the
-      // new label
-      _onLabelChanged: function(e) {
-        // Using Polymer.dom because the id is generated
-        var newLabel = e.currentTarget.value;
-        if (newLabel !== this.todo.label) {
-          this.fire('todo-item-edited', {
-            uid: this.todo.uid,
-            label: newLabel
-          });
-        }
-      },
-      // Fire an event when the user toggles the checkbox
-      _notifyCheckToggled: function() {
-        this.fire('todo-item-checked-toggled', {
-          uid: this.todo.uid,
-          isComplete: this.$.checkbox.checked
-        });
-      },
       // If enter was pressed, unfocus the text input
       _checkConfirmation: function(e) {
         if (e.keyCode === 13) {
@@ -157,11 +145,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           e.currentTarget.blur();
         }
       },
-      // Fire an event when the user deletes a todo
-      _notifyDeleted: function() {
-        this.fire('todo-item-deleted', {
-          uid: this.todo.uid
-        });
+      _onDelete: function(e) {
+        this.deleted = true;
       }
     });
   </script>
