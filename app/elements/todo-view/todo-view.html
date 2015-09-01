@@ -203,7 +203,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div class="app-name flex">Todos</div>
 
             <paper-button class="clear-btn"
-                          on-tap="clearCompletedTodos">
+                          on-tap="clearTodos">
               Clear Completed
             </paper-button>
 
@@ -232,8 +232,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'todo-view',
 
       properties: {
+
         route: String,
+
         todos: Object
+
       },
 
       addTodo: function(e) {
@@ -245,8 +248,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       deleteTodo: function(e) {
         this.arrayDelete('todos', e.detail.todo);
+      },
+
+      clearTodos: function() {
+        for (var i = 0; i < this.todos.length; i++) {
+          var todo = this.todos[i];
+          if (todo.isComplete) {
+            this.splice('todos', i--, 1);
+          }
+        }
       }
-      
+
     });
   </script>
 </dom-module>
