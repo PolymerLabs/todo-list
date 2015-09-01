@@ -28,42 +28,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template is="dom-repeat"
               items="{{todos}}"
               as="todo"
-              filter="_byState"
+              filter="{{_computeFilter(filterBy)}}"
               observe="isComplete">
-      <todo-item is-complete="{{todo.isComplete}}"
-                 label="{{todo.label}}"
-                 deleted="{{todo.deleted}}">
-      </todo-item>
+      <todo-item todo="{{todo}}"></todo-item>
     </template>
   </template>
   <script>
     Polymer({
+
       is: 'todo-list',
+
       properties: {
+
         todos: Array,
+
         filterBy: {
           type: String,
           value: 'all'
         }
+
       },
+
       _todosEmpty: function(length) {
         return !!length;
       },
-      _byState: function(todo) {
-        switch(this.filterBy) {
-          // Only display active todos
-          case 'active':
-            return todo.isComplete === false;
 
-          // Only display completed todos
-          case 'completed':
-            return todo.isComplete === true;
+      _computeFilter: function(filterBy) {
+        if (filterBy) {
 
-          // Default to display all todos
-          default:
-            return true;
+          // If filterBy is 'all', return a filter that always returns
+          // the todo
+          if (filterBy === 'all') {
+            return function(item) {
+              return item;
+            }
+          }
+
+          // Handle 'completed', or its inverse, 'active'
+          var ifComplete = (filterBy === 'completed');
+          return function(item) {
+            return item.isComplete === ifComplete;
+          };
         }
       }
+
     });
   </script>
 </dom-module>

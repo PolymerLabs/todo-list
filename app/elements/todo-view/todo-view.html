@@ -217,40 +217,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Content -->
         <div class="content">
-          <iron-pages attr-for-selected="data-route" selected="{{route}}">
-
-            <section data-route="all">
-              <todo-list todos="{{todos}}"></todo-list>
-              <todo-input on-add-todo="addTodo"></todo-input>
-            </section>
-
-            <section data-route="active">
-              <!-- <todo-list todos="{{todos}}"
-                         filter-by="active">
-              </todo-list> -->
-            </section>
-
-            <section data-route="completed">
-              <!-- <todo-list todos="{{todos}}"
-                         filter-by="completed">
-              </todo-list> -->
-            </section>
-
-          </iron-pages>
+          <todo-list todos="{{todos}}"
+                     filter-by="{{route}}"
+                     on-delete-todo="deleteTodo">
+          </todo-list>
+          <todo-input on-add-todo="addTodo"></todo-input>
         </div>
       </paper-header-panel>
     </paper-drawer-panel>
   </template>
   <script>
     Polymer({
+
       is: 'todo-view',
+
       properties: {
         route: String,
         todos: Object
       },
+
       addTodo: function(e) {
-        this.push('todos', e.detail.value);
+        this.push('todos', {
+          label: e.detail.value,
+          isComplete: false
+        });
+      },
+
+      deleteTodo: function(e) {
+        this.arrayDelete('todos', e.detail.todo);
       }
+      
     });
   </script>
 </dom-module>

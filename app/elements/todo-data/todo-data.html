@@ -8,18 +8,72 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../todo-firebase/todo-firebase.html">
-<link rel="import" href="../todo-auth/todo-auth.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase-collection.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase-auth.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 
 <dom-module id="todo-data">
 
   <template>
 
-    <!-- 1. Connect to Firebase and establish a ref -->
-    <todo-firebase location="https://polymer-todo.firebaseio.com" ref="{{ref}}"></todo-firebase>
-    <!-- 2. Once we have a ref, check if there is a user. If there isn't we'll
-            prompt sign-in -->
-    <todo-auth ref="{{ref}}" user="{{user}}"></todo-auth>
+    <style>
+      paper-dialog {
+        padding: 32px;
+      }
+
+      .google-sign-in {
+        display: inline-block;
+        background: #4285f4;
+        color: white;
+        width: 190px;
+        border-radius: 5px;
+        white-space: nowrap;
+      }
+
+      .google-sign-in:hover {
+        cursor: pointer;
+      }
+
+      .google-sign-in-icon {
+        background: url('/images/google-sign-in/g-normal.png') transparent 5px 50% no-repeat;
+        display: inline-block;
+        vertical-align: middle;
+        width: 42px;
+        height: 42px;
+        border-right: #2265d4 1px solid;
+      }
+
+      .google-sign-in-label {
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: 42px;
+        padding-right: 42px;
+        font-size: 14px;
+        font-weight: bold;
+        /* Use the Roboto font that is loaded in the <head> */
+        font-family: 'Roboto', sans-serif;
+      }
+    </style>
+
+    <firebase-auth id="auth" location="{{location}}" provider="google" user="{{user}}"></firebase-auth>
+    <firebase-collection location="{{userLocation}}" ref="{{ref}}" data="{{todos}}" log></firebase-collection>
+
+    <paper-dialog modal
+                  opened="{{!user}}"
+                  entry-animation="scale-up-animation"
+                  exit-animation="fade-out-animation">
+      <h2>Oh hai! Please sign in</h2>
+      <div>
+        <div class="google-sign-in"
+             tabindex="0"
+             on-tap="signIn">
+          <span class="google-sign-in-icon"></span>
+          <span class="google-sign-in-label">Google</span>
+        </div>
+      </div>
+    </paper-dialog>
 
   </template>
   <script>
@@ -34,86 +88,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         user: {
-          observer: '_userChanged',
-          notify: true
+          observer: '_userChanged'
         }
 
       },
 
-      observers: [
-        '_dataChanged(todos.*)'
-      ],
-
-      created: function() {
-        this._collectTodosCb = this._collectTodos.bind(this);
+      signIn: function() {
+        this.$.auth.login();
       },
 
-      _userChanged: function(user, old) {
-        if (this.userRef) {
-          this.userRef.off('value', this._collectTodosCb);
-        }
+      signOut: function() {
+        this.ref.unauth();
+        this.user = null;
+      },
+
+      _userChanged: function(user) {
         if (user) {
-          // Get their todo list
-          this.userRef = this.ref.child('users/' + user.uid);
-          // Listen for realtime changes
-          // This will be called any time state is changed in Firebase and
-          // will typically cause the list to rerender. Because most elements
-          // in the list remain the same, the dirty checking here is cheap
-          // ...or so kevinpschaaf tells me :D
-          // This makes Firebase the single source of truth for the app, meaning
-          // most/all components are pretty stateless. Which is awesome.
-          this.userRef.on('value', this._collectTodosCb);
-        }
-      },
-
-      _collectTodos: function(snapshot) {
-        var makeTodo = function(snapshot) {
-          var todo = snapshot.val();
-          // Store a reference to the Firebase object so we can
-          // easily operate on this todo.
-          todo.ref = snapshot.ref();
-          return todo;
-        };
-        var todos = [];
-        snapshot.forEach(function(childSnapshot) {
-          todos.push(makeTodo(childSnapshot));
-        });
-        // Replace our todos, this is so we can re-render
-        // without holding on to state
-        // This way Firebase becomes the single source of truth
-        this.todos = todos;
-      },
-
-      _dataChanged: function(info) {
-        console.log('info', info);
-        var parts = info.path.split('.');
-        console.log('parts', parts);
-        var property = parts.pop();
-        console.log('property', property);
-        switch (property) {
-          case 'isComplete':
-          case 'label':
-            console.log('updating', property, 'to', info.value);
-            var update = {};
-            update[property] = info.value;
-            console.log('this.get', parts, '=', this.get(parts));
-            var todo = this.get(parts);
-            todo.ref.update(update);
-            break;
-          case 'deleted':
-            console.log('removing todo');
-            todo.ref.remove();
-            break;
-          case 'splices':
-            // Would it be better to fire an event and modify todo-data, or
-            // watch for splices changes, get the last child and update that way?
-            
-            // console.log('adding todo');
-            // console.log(info.value);
-            // this.userRef.push({
-            //   label: info.value,
-            //   isComplete: false
-            // });
+          this.userLocation = [this.location, 'users', this.user.uid].join('/');
+          console.log('userLocation', this.userLocation);
         }
       }
 

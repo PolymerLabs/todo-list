@@ -70,12 +70,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       no corresponding js property so we need to write a literal attribute
       value, which is what $= does. -->
       <paper-checkbox id="checkbox"
-                      checked="{{isComplete}}"
+                      checked="{{todo.isComplete}}"
                       aria-labelledby$="[[_computeLabelId(todo.uid)]]"></paper-checkbox>
 
       <paper-input id="[[_computeLabelId(todo.uid)]]"
                    class="flex"
-                   value="{{label}}"
+                   value="{{todo.label}}"
                    no-label-float
                    on-keypress="_checkConfirmation"></paper-input>
 
@@ -89,19 +89,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
   <script>
     Polymer({
+
       is: 'todo-item',
+
       properties: {
-        label: {
-          notify: true
-        },
 
-        isComplete: {
-          notify: true
-        },
-
-        deleted: {
-          notify: true
-        },
+        todo: Object,
 
         // Used to show when one of the child elements has focus. Causes
         // paper-material to elevate
@@ -110,7 +103,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: false,
           reflectToAttribute: true
         }
+
       },
+
       attached: function() {
         // Delegate focus events with useCapture to figure out if one of our
         // child elements is being focused or if we're about to blur
@@ -120,24 +115,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.addEventListener('mouseenter', this._activate.bind(this));
         this.addEventListener('mouseleave', this._deactivate.bind(this));
       },
+
       detached: function() {
         this.removeEventListener('focus', this._activate.bind(this), true);
         this.removeEventListener('blur', this._deactivate.bind(this), true);
         this.removeEventListener('mouseenter', this._activate.bind(this));
         this.removeEventListener('mouseleave', this._deactivate.bind(this));
       },
+
       _activate: function() {
         this.active = true;
       },
+
       _deactivate: function() {
         this.active = false;
       },
+
       _computeElevation: function(active) {
         return active ? 2 : 0;
       },
+
       _computeLabelId: function(uid) {
         return 'todoItemLabel-' + uid;
       },
+
       // If enter was pressed, unfocus the text input
       _checkConfirmation: function(e) {
         if (e.keyCode === 13) {
@@ -145,9 +146,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           e.currentTarget.blur();
         }
       },
-      _onDelete: function(e) {
-        this.deleted = true;
+
+      _onDelete: function() {
+        this.fire('delete-todo', {todo: this.todo});
       }
+      
     });
   </script>
 </dom-module>
