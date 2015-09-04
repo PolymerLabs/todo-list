@@ -59,8 +59,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <firebase-auth id="auth" location="{{location}}" provider="google" user="{{user}}"></firebase-auth>
-    <firebase-collection location="{{userLocation}}" ref="{{ref}}" data="{{todos}}" log></firebase-collection>
+    <firebase-auth id="auth"
+                   location="{{location}}"
+                   provider="google"
+                   user="{{user}}">
+    </firebase-auth>
+
+    <firebase-collection location="{{userLocation}}"
+                         ref="{{ref}}"
+                         data="{{fbTodos}}"
+                         on-firebase-value="_firebaseLoaded"
+                         log>
+    </firebase-collection>
 
     <!-- Backfill todos from localstorage. This prevents an initial flash while
          we're waiting to hear from Firebase, and it lets the user see their
@@ -68,7 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          This SHOULD NOT write to Firebase. If the user has cleared their
          localstorage, it should not nullify everything saved in Firebase. -->
     <iron-localstorage name="polymer-todo"
-                       on-iron-localstorage-load="_backfillTodos"
+                       on-iron-localstorage-load="_backupLoaded"
                        on-iron-localstorage-load-empty="_createDefaultTodos"
                        value="{{backupTodos}}">
     </iron-localstorage>
@@ -102,13 +112,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         user: {
           observer: '_userChanged'
+        },
+
+        _firebaseConnected: {
+          value: false
         }
 
       },
-
-      observers: [
-        '_todosChanged(todos.*)'
-      ],
 
       signIn: function() {
         this.$.auth.login();
@@ -126,18 +136,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
-      _todosChanged: function(changeRecord) {
-        console.log('todos changed');
-        if (changeRecord.path === 'todos') {
-          return;
-        }
-        var todos = changeRecord.base;
-        this.set('backupTodos', todos.slice());
+      _firebaseLoaded: function() {
+        console.log('firebase loaded');
+        this._firebaseConnected = true;
+        this.todos = this.fbTodos;
+        this.backupTodos = this.fbTodos;
+        this.linkPaths('fbTodos', 'todos');
+        this.linkPaths('backupTodos', 'todos');
       },
 
-      _backfillTodos: function() {
-        console.log('backfill todos');
-        this.set('todos', this.backupTodos.slice());
+      _backupLoaded: function() {
+        console.log('backup loaded');
+        if (!this._firebaseConnected) {
+          this.todos = this.backupTodos.slice();
+        }
       },
 
       _createDefaultTodos: function() {
