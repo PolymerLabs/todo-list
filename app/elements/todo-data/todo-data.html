@@ -13,6 +13,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
+
 
 <dom-module id="todo-data">
 
@@ -60,6 +62,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <firebase-auth id="auth" location="{{location}}" provider="google" user="{{user}}"></firebase-auth>
     <firebase-collection location="{{userLocation}}" ref="{{ref}}" data="{{todos}}" log></firebase-collection>
 
+    <!-- Backfill todos from localstorage. This prevents an initial flash while
+         we're waiting to hear from Firebase, and it lets the user see their
+         old todos if they start the app offline.
+         This SHOULD NOT write to Firebase. If the user has cleared their
+         localstorage, it should not nullify everything saved in Firebase. -->
+    <iron-localstorage name="polymer-todo"
+                       on-iron-localstorage-load="_backfillTodos"
+                       on-iron-localstorage-load-empty="_createDefaultTodos"
+                       value="{{backupTodos}}">
+    </iron-localstorage>
+
     <paper-dialog modal
                   opened="{{!user}}"
                   entry-animation="scale-up-animation"
@@ -93,6 +106,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       },
 
+      observers: [
+        '_todosChanged(todos.*)'
+      ],
+
       signIn: function() {
         this.$.auth.login();
       },
@@ -102,11 +119,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.user = null;
       },
 
+      // Setup user ref in firebase if auth succeeds
       _userChanged: function(user) {
         if (user) {
           this.userLocation = [this.location, 'users', this.user.uid].join('/');
-          console.log('userLocation', this.userLocation);
         }
+      },
+
+      _todosChanged: function(changeRecord) {
+        console.log('todos changed');
+        if (changeRecord.path === 'todos') {
+          return;
+        }
+        var todos = changeRecord.base;
+        this.set('backupTodos', todos.slice());
+      },
+
+      _backfillTodos: function() {
+        console.log('backfill todos');
+        this.set('todos', this.backupTodos.slice());
+      },
+
+      _createDefaultTodos: function() {
+        console.log('create default todos');
       }
 
     });
