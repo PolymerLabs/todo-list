@@ -21,8 +21,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: block;
       box-sizing: border-box;
       min-height: 50px;
-      font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-      font-size: 1rem;
     }
     .row {
       position: relative;
@@ -38,15 +36,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       text-decoration: line-through;
     }
     paper-input {
-      margin-top: 4px;
-      --paper-input-container-label: {
-        font-size: 1rem;
-        font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-        color: var(--primary-text-color);
+      margin-top: -4px;
+      --paper-input-container-input: {
+        font-family: 'Roboto Slab';
+        font-size: 20px;
       };
       --paper-input-container-underline: {
         background: transparent;
-      }
+      };
     }
     .btn-cancel {
       opacity: 0;
@@ -150,7 +147,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _onDelete: function() {
         this.fire('delete-todo', {todo: this.todo});
       }
-      
+
     });
   </script>
 </dom-module>
