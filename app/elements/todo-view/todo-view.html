@@ -10,7 +10,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <!-- Iron elements -->
 <link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
-<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
 <!-- Paper elements -->
 <link rel="import" href="../../bower_components/paper-drawer-panel/paper-drawer-panel.html">
@@ -108,19 +107,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     /* Height of the scroll area */
     .content {
       height: 900px;
-    }
-
-    todo-list {
-      margin: 64px auto 0;
+      padding: 64px 16px 0;
     }
 
     todo-list, todo-input {
+      margin: 0 auto;
       max-width: 1000px;
     }
 
-    todo-input {
-      margin: 0 auto;
-    }
+    /*padding: 16px 16px 16px 22px;*/
 
     /* Breakpoints */
 
@@ -229,11 +224,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Content -->
         <div class="content">
+
           <todo-list todos="{{todos}}"
                      filter-by="{{route}}"
                      on-delete-todo="deleteTodo">
           </todo-list>
+
           <todo-input on-add-todo="addTodo"></todo-input>
+
         </div>
       </paper-header-panel>
     </paper-drawer-panel>

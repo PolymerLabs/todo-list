@@ -9,13 +9,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 
 <dom-module id="todo-input">
   <style>
     :host {
       display: block;
-      padding-left: 140px;
+    }
+    .input-wrapper {
+      padding-left: 70px;
     }
     paper-input {
       display: inline-block;
@@ -59,12 +62,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <template>
 
-    <paper-input id="todoInput"
-                 no-label-float
-                 label="Add an item">
-    </paper-input>
+    <div class="input-wrapper">
 
-    <paper-button on-tap="add">Add</paper-button>
+      <paper-input id="todoInput"
+                   no-label-float
+                   label="Add an item">
+      </paper-input>
+
+      <paper-button on-tap="add">Add</paper-button>
+      
+    </div>
 
   </template>
 </dom-module>

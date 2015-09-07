@@ -8,7 +8,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../todo-item/todo-item.html">
 
 <dom-module id="todo-list">
@@ -61,7 +60,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           if (filterBy === 'all') {
             return function(item) {
               return item;
-            }
+            };
           }
 
           // Handle 'completed', or its inverse, 'active'
