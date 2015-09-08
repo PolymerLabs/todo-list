@@ -19,6 +19,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
 
+      .no-more-msg {
+        min-height: 40px;
+        font-family: 'Roboto Slab';
+        font-size: 20px;
+        color: #BDBDBD;
+        padding-left: 67px;
+      }
+
       todo-item:first-of-type {
         margin-top: 0;
       }
@@ -28,7 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <p hidden="[[_todosEmpty(todos.length)]]">No more todos!</p>
+    <p class="no-more-msg" hidden="[[_todosEmpty(todos.length)]]">No more todos! You're all caught up</p>
 
     <template is="dom-repeat"
               items="{{todos}}"
