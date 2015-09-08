@@ -35,20 +35,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     #drawerToolbar {
       color: var(--secondary-text-color);
       background-color: var(--drawer-menu-color);
-      border-bottom: var(--drawer-toolbar-border-color);
-    }
-
-    iron-pages {
-      padding: 48px 16px;
-    }
-
-    paper-material {
-      border-radius: 2px;
-      height: 100%;
-      padding: 16px 0 16px 0;
-      width: calc(98.66% - 16px);
-      margin: 16px auto;
-      background: white;
     }
 
     paper-menu iron-icon {
@@ -111,62 +97,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     todo-list, todo-input {
       margin: 0 auto;
       max-width: 1000px;
-    }
-
-    /*padding: 16px 16px 16px 22px;*/
-
-    /* Breakpoints */
-
-    /* Small */
-    @media (max-width: 600px) {
-
-      paper-material {
-        --menu-container-display: none;
-        width: calc(97.33% - 32px);
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-
-      .paper-font-display1 {
-        font-size: 12px;
-      }
-
-      #drawer .paper-toolbar {
-        margin-left: 16px;
-      }
-
-      #overlay {
-        min-width: 360px;
-      }
-
-      .bg {
-        background: white;
-      }
-
-    }
-
-    /* Tablet+ */
-    @media (min-width: 601px) {
-
-      html {
-        font-size: 20px;
-      }
-
-      #drawer.paper-drawer-panel > [drawer] {
-        border-right: 1px solid rgba(0, 0, 0, 0.14);
-      }
-
-      iron-pages {
-        padding: 48px 62px;
-      }
-
-      paper-material {
-        width: calc(98% - 46px);
-        margin-bottom: 32px;
-        padding-left: 30px;
-        padding-right: 30px;
-      }
-
     }
   </style>
   <template>
