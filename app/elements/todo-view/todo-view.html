@@ -110,19 +110,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-toolbar id="drawerToolbar"></paper-toolbar>
 
         <!-- Drawer Content -->
-        <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}">
+        <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
           <!-- Give anchors a tabindex to work around https://github.com/PolymerElements/iron-menu-behavior/issues/19 -->
-          <a data-route="all" href="/" tabindex="-1">
+          <a data-route="all" href="/" tabindex="-1" on-click="closeDrawer">
             <iron-icon icon="todo-icons:assignment"></iron-icon>
             <span>All Todos</span>
           </a>
 
-          <a data-route="active" href="/active" tabindex="-1">
+          <a data-route="active" href="/active" tabindex="-1" on-click="closeDrawer">
             <iron-icon icon="todo-icons:assignment-late"></iron-icon>
             <span>Active</span>
           </a>
 
-          <a data-route="completed" href="/completed" tabindex="-1">
+          <a data-route="completed" href="/completed" tabindex="-1" on-click="closeDrawer">
             <iron-icon icon="todo-icons:assignment-turned-in"></iron-icon>
             <span>Completed</span>
           </a>
@@ -166,7 +166,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </paper-header-panel>
     </paper-drawer-panel>
-    
+
   </template>
   <script>
     Polymer({
@@ -198,6 +198,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           if (todo.isComplete) {
             this.splice('todos', i--, 1);
           }
+        }
+      },
+
+      // Close drawer after menu item is selected if drawerPanel is narrow
+      closeDrawer: function() {
+        var drawerPanel = this.$.paperDrawerPanel;
+        if (drawerPanel.narrow) {
+          drawerPanel.closeDrawer();
         }
       }
 
