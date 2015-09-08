@@ -68,7 +68,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <firebase-collection location="{{userLocation}}"
                          ref="{{ref}}"
                          data="{{fbTodos}}"
-                         on-firebase-value="_firebaseLoaded">
+                         on-firebase-value="_firebaseLoaded"
+                         log>
     </firebase-collection>
 
     <!-- Backfill todos from localstorage. This prevents an initial flash while
