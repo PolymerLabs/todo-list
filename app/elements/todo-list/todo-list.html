@@ -11,19 +11,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../todo-item/todo-item.html">
 
 <dom-module id="todo-list">
-  <style>
-    :host {
-      display: block;
-    }
-    todo-item:first-of-type {
-      margin-top: 0;
-    }
-    todo-item {
-      margin: 16px 0;
-    }
-  </style>
+
   <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+
+      todo-item:first-of-type {
+        margin-top: 0;
+      }
+
+      todo-item {
+        margin: 16px 0;
+      }
+    </style>
+
     <p hidden="[[_todosEmpty(todos.length)]]">No more todos!</p>
+
     <template is="dom-repeat"
               items="{{todos}}"
               as="todo"
@@ -31,6 +37,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               observe="isComplete">
       <todo-item todo="{{todo}}"></todo-item>
     </template>
+
   </template>
   <script>
     Polymer({

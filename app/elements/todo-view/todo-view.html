@@ -26,80 +26,83 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 <dom-module id="todo-view">
-  <style is="custom-style" include="app-theme"></style>
-  <style>
-    :host {
-      display: block;
-    }
 
-    #drawerToolbar {
-      color: var(--secondary-text-color);
-      background-color: var(--drawer-menu-color);
-    }
-
-    paper-menu iron-icon {
-      margin-right: 33px;
-      opacity: 0.54;
-    }
-
-    .paper-menu > .iron-selected {
-      color: var(--default-primary-color);
-    }
-
-    paper-menu a {
-      text-decoration: none;
-      color: var(--menu-link-color);
-      display: -ms-flexbox;
-      display: -webkit-flex;
-      display: flex;
-      -ms-flex-direction: row;
-      -webkit-flex-direction: row;
-      flex-direction: row;
-      -ms-flex-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-      font-family: var(--default-font-family);
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-      font-weight: 400;
-      line-height: 24px;
-      min-height: 48px;
-      padding: 0 16px;
-    }
-
-    #mainToolbar .middle-container {
-      height: 100%;
-      margin-left: 48px;
-    }
-
-    #mainToolbar:not(.tall) .middle {
-      font-size: 18px;
-      padding-bottom: 0;
-    }
-
-    .app-name {
-      font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-      font-weight: bold;
-    }
-
-    .clear-btn:hover,
-    .clear-btn:focus {
-      background-color: var(--text-primary-color);
-      color: var(--default-primary-color);
-    }
-
-    /* Height of the scroll area */
-    .content {
-      height: 900px;
-      padding: 64px 16px 0;
-    }
-
-    todo-list, todo-input {
-      margin: 0 auto;
-      max-width: 1000px;
-    }
-  </style>
   <template>
+
+    <style is="custom-style" include="app-theme"></style>
+    <style>
+      :host {
+        display: block;
+      }
+
+      #drawerToolbar {
+        color: var(--secondary-text-color);
+        background-color: var(--drawer-menu-color);
+      }
+
+      paper-menu iron-icon {
+        margin-right: 33px;
+        opacity: 0.54;
+      }
+
+      .paper-menu > .iron-selected {
+        color: var(--default-primary-color);
+      }
+
+      paper-menu a {
+        text-decoration: none;
+        color: var(--menu-link-color);
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -ms-flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        font-family: var(--default-font-family);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        font-weight: 400;
+        line-height: 24px;
+        min-height: 48px;
+        padding: 0 16px;
+      }
+
+      #mainToolbar .middle-container {
+        height: 100%;
+        margin-left: 48px;
+      }
+
+      #mainToolbar:not(.tall) .middle {
+        font-size: 18px;
+        padding-bottom: 0;
+      }
+
+      .app-name {
+        font-family: 'Roboto Slab', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        font-weight: bold;
+      }
+
+      .clear-btn:hover,
+      .clear-btn:focus {
+        background-color: var(--text-primary-color);
+        color: var(--default-primary-color);
+      }
+
+      /* Height of the scroll area */
+      .content {
+        height: 900px;
+        padding: 64px 16px 0;
+      }
+
+      todo-list, todo-input {
+        margin: 0 auto;
+        max-width: 1000px;
+      }
+    </style>
+
     <paper-drawer-panel id="paperDrawerPanel">
       <div drawer>
 
@@ -163,6 +166,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </paper-header-panel>
     </paper-drawer-panel>
+    
   </template>
   <script>
     Polymer({

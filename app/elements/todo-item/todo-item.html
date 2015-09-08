@@ -17,50 +17,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../todo-icons/todo-icons.html">
 
 <dom-module id="todo-item">
-  <style>
-    :host {
-      display: block;
-      box-sizing: border-box;
-      min-height: 50px;
-    }
-    .row {
-      position: relative;
-      padding: 16px 16px 16px 22px;
-    }
-    paper-checkbox {
-      /* Checkbox has 8px of extra space on top so have to tweak it to center */
-      margin-top: -4px;
-      margin-right: 20px;
-    }
-    paper-checkbox[checked] + .label {
-      color: #9E9E9E;
-      text-decoration: line-through;
-    }
-    paper-input {
-      margin-top: -4px;
-      --paper-input-container-input: {
-        font-family: 'Roboto Slab';
-        font-size: 20px;
-      };
-      --paper-input-container-underline: {
-        background: transparent;
-      };
-    }
-    .btn-cancel {
-      opacity: 0;
-      /* Same as paper-material shadow */
-      /*https://github.com/PolymerElements/paper-styles/blob/master/shadow.html#L17*/
-      transition: opacity 0.28s;
-      /* Odd hack to fix cropped paper-ripple focus state */
-      /* https://github.com/PolymerElements/paper-icon-button/issues/33 */
-      font-size: 15px;
-    }
-    :host:hover .btn-cancel,
-    :host([active]) .btn-cancel {
-      opacity: 1;
-    }
-  </style>
+
   <template>
+
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        min-height: 50px;
+      }
+
+      .row {
+        position: relative;
+        padding: 16px 16px 16px 22px;
+      }
+
+      paper-checkbox {
+        /* Checkbox has 8px of extra space on top so have to tweak it to center */
+        margin-top: -4px;
+        margin-right: 20px;
+      }
+
+      paper-checkbox[checked] + .label {
+        color: #9E9E9E;
+        text-decoration: line-through;
+      }
+
+      paper-input {
+        margin-top: -4px;
+        --paper-input-container-input: {
+          font-family: 'Roboto Slab';
+          font-size: 20px;
+        };
+        --paper-input-container-underline: {
+          background: transparent;
+        };
+      }
+
+      .btn-cancel {
+        opacity: 0;
+        /* Same as paper-material shadow */
+        /*https://github.com/PolymerElements/paper-styles/blob/master/shadow.html#L17*/
+        transition: opacity 0.28s;
+        /* Odd hack to fix cropped paper-ripple focus state */
+        /* https://github.com/PolymerElements/paper-icon-button/issues/33 */
+        font-size: 15px;
+      }
+
+      :host:hover .btn-cancel,
+      :host([active]) .btn-cancel {
+        opacity: 1;
+      }
+    </style>
+
     <paper-material elevation="[[_computeElevation(active)]]"
                     class="row layout horizontal center">
 
@@ -83,7 +92,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                          tabindex="0"
                          on-tap="_onDelete">
       </paper-icon-button>
+
     </paper-material>
+    
   </template>
   <script>
     Polymer({
