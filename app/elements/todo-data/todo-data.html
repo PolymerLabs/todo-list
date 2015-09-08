@@ -78,7 +78,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          localstorage, it should not nullify everything saved in Firebase. -->
     <iron-localstorage name="polymer-todo"
                        on-iron-localstorage-load="_backupLoaded"
-                       on-iron-localstorage-load-empty="_createDefaultTodos"
                        value="{{backupTodos}}">
     </iron-localstorage>
 
@@ -136,7 +135,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _firebaseLoaded: function() {
-        console.log('firebase loaded');
         this._firebaseConnected = true;
         this.todos = this.fbTodos;
         this.backupTodos = this.fbTodos;
@@ -145,14 +143,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _backupLoaded: function() {
-        console.log('backup loaded');
         if (!this._firebaseConnected) {
           this.todos = this.backupTodos.slice();
         }
-      },
-
-      _createDefaultTodos: function() {
-        console.log('create default todos');
       }
 
     });
