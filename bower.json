@@ -8,7 +8,7 @@
     "platinum-elements": "PolymerElements/platinum-elements#^1.0.1",
     "neon-elements": "PolymerElements/neon-elements#^1.0.0",
     "page": "visionmedia/page.js#^1.6.3",
-    "firebase-element": "GoogleWebComponents/firebase-element#61-kschaaf-local-key"
+    "firebase-element": "GoogleWebComponents/firebase-element#8d58fcce9ca3a8f994e9bc664d7074ee0a4a814d"
   },
   "devDependencies": {
     "web-component-tester": "*",
