@@ -208,6 +208,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+      signOut: function() {
+        this.fire('sign-out');
+      },
+
       // Close drawer after menu item is selected if drawerPanel is narrow
       closeDrawer: function() {
         var drawerPanel = this.$.paperDrawerPanel;

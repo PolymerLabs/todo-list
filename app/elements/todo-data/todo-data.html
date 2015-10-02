@@ -61,12 +61,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <firebase-auth id="auth"
                    location="{{location}}"
+                   ref="{{ref}}"
                    provider="google"
                    user="{{user}}">
     </firebase-auth>
 
     <firebase-collection location="{{userLocation}}"
-                         ref="{{ref}}"
                          data="{{fbTodos}}"
                          on-firebase-value="_firebaseLoaded"
                          log>
