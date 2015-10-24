@@ -62,8 +62,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
 
-    <todo-data id="data"
-               location="https://polymer-todo.firebaseio.com"
+    <todo-auth id="auth" user="{{user}}"></todo-auth>
+
+    <todo-data location="https://polymer-todo.firebaseio.com"
                user="{{user}}"
                todos="{{todos}}">
     </todo-data>

@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.signOut = function() {
-    this.$.data.signOut();
+    this.$.auth.signOut();
   };
 
 })(document);
