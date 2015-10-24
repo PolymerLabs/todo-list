@@ -57,10 +57,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <firebase-auth id="authenticate"
+                   user="{{user}}"
                    location="{{location}}"
                    ref="{{refauth}}"
-                   provider="google"
-                   user="{{user}}">
+                   provider="google">
     </firebase-auth>
 
     <paper-dialog modal
@@ -87,16 +87,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
 
         user: {
-          notify: true
-        }
+                notify: true
+        },
       },
 
       signIn: function() {
-        this.refauth.login();
+        this.$.authenticate.login();
       },
 
       signOut: function() {
-        this.refauth.logout();
+        this.$.authenticate.logout();
         this.user = null;
       }
     });
