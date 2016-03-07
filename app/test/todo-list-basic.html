@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>leave-type-menu-spec</title>
+
+  <script src="../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <link rel="import" href="../bower_components/polymer/polymer.html">
+  <script src="../bower_components/web-component-tester/browser.js"></script>
+  <script src="../bower_components/test-fixture/test-fixture-mocha.js"></script>
+  <link rel="import" href="../bower_components/test-fixture/test-fixture.html">
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../elements/todo-list/todo-list.html">
+
+</head>
+<body>
+
+<test-fixture id="basic">
+  <template>
+    <todo-list></todo-list>
+  </template>
+</test-fixture>
+
+<script>
+
+  suite('<todo-list>', function() {
+    var element, todos;
+
+    setup(function() {
+      element = fixture('basic');
+      element.todos = [ {label: "Write Unit Tests"}, {label: "Commence TDD"}];
+    });
+
+    test("should display list of todos", function(done) {
+      flush(function () {
+        todos = Polymer.dom(element.root).querySelectorAll('todo-item')
+        assert.equal(todos.length, 2);
+        done();
+      })
+    });
+  });
+</script>
+
+</body>
+</html>
