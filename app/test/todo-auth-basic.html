@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>leave-type-menu-spec</title>
+
+  <script src="../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <link rel="import" href="../bower_components/polymer/polymer.html">
+  <script src="../bower_components/web-component-tester/browser.js"></script>
+  <script src="../bower_components/test-fixture/test-fixture-mocha.js"></script>
+  <link rel="import" href="../bower_components/test-fixture/test-fixture.html">
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../elements/todo-auth/todo-auth.html">
+
+</head>
+<body>
+
+<test-fixture id="basic">
+  <template>
+    <todo-auth></todo-auth>
+  </template>
+</test-fixture>
+
+<script>
+
+  suite('<todo-auth>', function() {
+    var element, user;
+
+    setup(function() {
+      element = fixture('basic');
+      element.$.authenticate.detached = sinon.mock();
+      element.user= {provider: "Fake user object"};
+    });
+
+    test("paper-dialog should not corrupt user property", function() {
+      var paperDialog;
+      paperDialog = element.querySelector('paper-dialog');
+      paperDialog.open();
+      assert.deepEqual(element.user, {provider: "Fake user object"});
+    });
+  });
+</script>
+
+</body>
+</html>
